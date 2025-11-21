@@ -6,7 +6,7 @@ In questo capitolo tali conoscenze vengono applicate nella costruzione del workf
 
 L'importazione del modello 3D rappresenta il primo passo fondamentale nel processo di animazione di un personaggio umanoide. Affinchè un modello possa essere animato correttamente, esso deve essere dotato di una struttura scheletrica interna (rig) che consenta la manipolazione delle articolazioni e la deformazione della mesh. La qualità e la correttezza dei rig influenzano direttamente la fluidità e la naturaleza dei movimenti, rendendo questa fase cruciale per l'intera pipeline di animazione.
 
-In ambito di sviluppo videoludico e applicazioni interattive, i modelli umanoidi vengono generalmente importati da librerie esterne o realizzati tramite software di modellazione 3D. Tuttavia , è necessario assicurarsi che il formato del file sia compatibile con il motore di sviluppo utilizzato: il formato FBX è il più diffuso in quanto permette di importare non solo la geometria del modello, ma anche la rig e, se presenti, le animazioni predefinite.
+In ambito di sviluppo videoludico e applicazioni interattive, i modelli umanoidi vengono generalmente importati da librerie esterne o realizzati tramite software di modellazione 3D. Tuttavia, è necessario assicurarsi che il formato del file sia compatibile con il motore di sviluppo utilizzato: il formato FBX è il più diffuso in quanto permette di importare non solo la geometria del modello, ma anche la rig e, se presenti, le animazioni predefinite.
 
 L'obiettivo di questa sezione è quindi descrivere i principali formati di file utilizzati, le fonti più comuni per l'acquisizione di modelli umanoidi e le impostazioni necessarie per garantire una corretta integrazione del personaggio all'interno dell'ambiente Unity.
 
@@ -31,13 +31,13 @@ Nella fase di importazione dei modelli umanoidi in Unity, il formato del file ri
 Il formato FBX (Filmbox) è considerato lo standard nell'ambito dell'animazione 3D e della produzione videoludica. Oltre alla mesh del modello, l'FBX è in grado di contenere al suo interno la struttura scheletrica (rig), le animazioni associate, le informazioni sui materiali e le texture. Grazie a queste caratteristiche, l'FBX permette di trasferire un modello completo direttamente da software di modellazione come Blender, Maya o 3ds Max a Unity, mantenendo intatta la gerarchia delle ossa e la corretta disposizione delle animazioni.
 Al contrario, il formato OBJ è molto più semplice e limitato. Esso rappresenta esclusivamente la geometria della mesh, senza contenere rig nè animazioni. Questo lo rende adatto per modelli statici o come base per successivi processi di rigging ed animazione, ma non per una importazione diretta di personaggi già animabili.
 
-In questa fase, l'obbiettivo principale è garantire che il modello umanoide sia pronto per ricevere animazioni, senza intervenire ancora su rigging, skinning o retargeting automatico, che saranno approfonditi nei capitoli successivi.
+In questa fase, l'obiettivo principale è garantire che il modello umanoide sia pronto per ricevere animazioni, senza intervenire ancora su rigging, skinning o retargeting automatico, che saranno approfonditi nei capitoli successivi.
 
 \section{Applicazione di animazioni predefinite}
 
 Una volta importato il modello umanoide nell'ambiente di sviluppo, è possibile procedere con l'applicazione delle animazioni. L'utilizzo di animazioni predefinite consente di ridurre notevolmente i tempi di produzione, evitando la necessità di creare manualmente i movimenti tramite tecniche di keyframing o sistemi di motion capture. Le animazioni predefinite sono generalmente organizzate in librerie, come quelle messe a disposizione da Mixamo, dall'Unity Asset Store o da altri archivi professionali di motion data.
 
-Unity facilita l'integrazione delle animazioni attraverso il sistema di configurazione del rig Humanoid, che permette di adattare automaticamente le animazioni anche tra modelli differenti. Ciò significa che una stessa animazione , se correttamente configurata, può essere riutilizzata su più personaggi, a condizione che dispongano di una struttura scheletrica compatibile.
+Unity facilita l'integrazione delle animazioni attraverso il sistema di configurazione del rig Humanoid, che permette di adattare automaticamente le animazioni anche tra modelli differenti. Ciò significa che una stessa animazione, se correttamente configurata, può essere riutilizzata su più personaggi, a condizione che dispongano di una struttura scheletrica compatibile.
 
 \subsection{Animazioni di base: camminata, corsa, salti}
 
@@ -124,7 +124,7 @@ Una volta inserito il file FBX all'interno del progetto Unity, il motore provved
     \item \textbf{Update Mode}: questo ti permette di selezionare quando l'Animator aggiorna e quale scala temporale deve utilizzare
     \begin{enumerate}
         \item \textbf{Normale}: L'Animator viene aggiornato in sincronia con la chiamata Update, e la velocità dell'animatore corrisponde a quella attuale. Se la scala temporale è rallentata, le animazioni rallenteranno per adattarsi.
-        \item \textbf{Animate Physics}: L'animatore viene aggiornato in sincronia con al chiamata FixedUpdate (cioè in perfetta sincronia con il sistema fisico). Dovresti usare questa modalità se stai animando il movimento di oggetti con interazioni fisiche, come i personaggi che possono spingere oggetti rigidbody.
+        \item \textbf{Animate Physics}: L'animatore viene aggiornato in sincronia con la chiamata FixedUpdate (cioè in perfetta sincronia con il sistema fisico). Dovresti usare questa modalità se stai animando il movimento di oggetti con interazioni fisiche, come i personaggi che possono spingere oggetti rigidbody.
         \item \textbf{Unscaled Time}: L'animatore viene aggiornato in sincronia con la chiamata Update, ma la velocità dell'animatore ignora la scala temporale attuale e anima comunque al 100\% della velocità. Questo è utile per animare un sistema GUI a velocità normale usando scale temporali modificate per effetti speciali o per mettere in pausa il gameplay.
     \end{enumerate}
     \item \textbf{Culling Mode}: la modalita culling puoi scegliere per le animazioni.
@@ -140,13 +140,13 @@ Una volta inserito il file FBX all'interno del progetto Unity, il motore provved
 
 Una volta importate le animazioni, è necessario definire le modalità con cui il personaggio passerà da un movimento all'altro durante l'esecuzione. Unity utilizza a tal fine l'\textbf{Animator Controller}, una macchina a stati finiti che rappresenta le diverse animazioni come nodi collegati da transizioni. Ogni transizione può essere controllata tramite parametri (booleani, interi, float o trigger), modificabili a runtime tramite script o input dell'utente.
 
-Questo approccio consente di gestire in modo modulare e scalabile sequenze complesse di movimenti, come la transizione fluida tra camminata e corsa o la sincronizzazione tra salto e aterraggio. Inoltre, Unity mette a disposizione strumenti avanzati come i \textbf{Blend Trees}, che permettono di interpolare più animazioni in funzione di un parametro continuo (ad esempio la velocità), garatendo una maggiore naturaleza nell'esecuzione delle animazione di locomozione.
+Questo approccio consente di gestire in modo modulare e scalabile sequenze complesse di movimenti, come la transizione fluida tra camminata e corsa o la sincronizzazione tra salto e aterraggio. Inoltre, Unity mette a disposizione strumenti avanzati come i \textbf{Blend Trees}, che permettono di interpolare più animazioni in funzione di un parametro continuo (ad esempio la velocità), garantendo una maggiore naturaleza nell'esecuzione delle animazione di locomozione.
 
 Un'architettura dell'Animator Controller ben progettata consente quindi una maggiore flessibilità, favorisce il riutilizzo delle animazioni e semplifica l'eventuale estensione futura del sistema di controllo del personaggio.
 
 \section{Gestione dei modelli animati}
 
-Nel progetto sviluppato, la gestione del modello umanoide risulta semplificata dal fatto che il personaggio utilizzato era già dotato di rig completo e di corretta associazione tra mesh e scheletro. Pertanto, non è stato necessario intervenire sul processo di \textit{skinning} o sulla definizione dei pesi dei vertici, operazioni che normalmente richiederebbero l'utilizzo del software di rigging come Blender o Maya. Unity ha riconosciuto automaticamente la struttura scheletrica del modello e ha provveduto  a configurarla secondo il sistema \textbf{Humanoid}, permettendo così di applicare animazioni predefinite sensaz ulteriore modifiche.
+Nel progetto sviluppato, la gestione del modello umanoide risulta semplificata dal fatto che il personaggio utilizzato era già dotato di rig completo e di corretta associazione tra mesh e scheletro. Pertanto, non è stato necessario intervenire sul processo di \textit{skinning} o sulla definizione dei pesi dei vertici, operazioni che normalmente richiederebbero l'utilizzo del software di rigging come Blender o Maya. Unity ha riconosciuto automaticamente la struttura scheletrica del modello e ha provveduto  a configurarla secondo il sistema \textbf{Humanoid}, permettendo così di applicare animazioni predefinite senza ulteriore modifiche.
 
 La riproduzione delle animazioni è stata gestita tramite l'\textbf{Animator Controller}, che ha permesso di definire e controllare le transizioni tra i diversi stati animati, come ad esempio il passaggio da idle a camminata o corsa. Poiché il modello era già predisposto per l'utilizzo delle animazioni umane standard, l'applicazione delle clip è avvenuta in modo diretto, senza la necessità di operazioni di retargeting manuale o adattamento delle pose.
 
@@ -192,17 +192,17 @@ Quando l'oggetto da animare \textbf{non possiede caratteristiche antropomorfe}, 
 
 Perche il retargeting automatico fallisce
 \begin{enumerate}
-    \item \textbf{Assenza di una corrispondenza diretta tra giunti}: 
-    I sistemi umanoide prevedono un mapping "uno-a-uno" tra ossa equivalenti (Hips -> Hips, Spine -> Spine, ecc.).
+    \item \textbf{Assenza di una corrispondenza diretta tra giunti}.
+    I sistemi umanoide prevedono un mapping "uno-a-uno" tra ossa equivalenti (Hips $\rightarrow$ Hips, Spine $\rightarrow$ Spine, ecc.).
     
-    \item \textbf{Topologia scheletrica non compatibile}
+    \item \textbf{Topologia scheletrica non compatibile}.
     Creature multipedali, insetti, robot o oggetti inventati presentano:
     \begin{itemize}
         \item più arti o meno arti
         \item articolazioni non lineari (segmenti meccanici, giunti cilindrici, pistoni, tentacoli)
         \item strutture non gerarchiche
     \end{itemize}
-    \item \textbf{Range di movimento non umano}
+    \item \textbf{Range di movimento non umano}.
     Gli algoritmi umanoidi assumono vincoli cinematici:
     \begin{itemize}
         \item cavallo pelvico
@@ -210,8 +210,8 @@ Perche il retargeting automatico fallisce
         \item articolazioni sferiche/hinge
             Oggeti artificiali possono violare tutti questi limiti (rotazione 360 gradi, assi multipli, traslazioni)
     \end{itemize}
-    \item \textbf{Root motion non universale}
-    Il movimento radie negli umanoidi è centrato su Hips/Pelvis. In un robot o in una creatura aliena, la "root" può essere ovunque.
+    \item \textbf{Root motion non universale}.
+    Il movimento radice negli umanoidi è centrato su Hips/Pelvis. In un robot o in una creatura aliena, la "root" può essere ovunque.
 \end{enumerate}
 
 

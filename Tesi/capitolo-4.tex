@@ -56,7 +56,7 @@ Sebbene i modelli trattati in questo lavoro non riproducano figure umane, la \te
 \begin{figure}[h]
 \begin{center}
      \includegraphics[width=8cm]{figure/gerar.png}
-     \caption{Rig Umanoide} \label{fig:gera}
+     \caption{Struttura scheletrica} \label{fig:gera}
 \end{center}
 \end{figure}
 
@@ -215,8 +215,7 @@ Lo script esegue le seguenti operazioni principali:
     \item \textbf{Creazione di nuovi gruppi di influenza}: per la mesh target, vengono generati automaticamente nuovi \textit{vertex group} corrispondenti alle ossa selezionate, garantendo la compatibilità con il rig del nuovo modello.
 \end{enumerate}
 
-\paragraph{Estratto del codice Python}
-
+\paragraph{Estratto del codice Python}.
 Un frammento rappresentativo dello script utilizzato in Blender mostra la copia dei gruppi di vertici e la creazione di nuovi gruppi di influenza
 
 \begin{minted}[fontsize=\small, bgcolor=lightgray, frame=lines, breaklines]{python}
@@ -248,7 +247,7 @@ Un frammento rappresentativo dello script utilizzato in Blender mostra la copia 
                     pass  # vertice non presente nel gruppo
 \end{minted}
 
-Questo frammento mostra come il sistema filtri automaticamente i pesi pertinenti a li assegni ai vertici correspondenti del nuovo modello. Il risultato è una \textbf{mappatura coerente tra ossa e mesh}, che consente di preservare la qualità delle deformazioni anche in presenza di una topologia differenti tra i due oggetti.
+Questo frammento mostra come il sistema filtri automaticamente i pesi pertinenti e li assegni ai vertici correspondenti del nuovo modello. Il risultato è una \textbf{mappatura coerente tra ossa e mesh}, che consente di preservare la qualità delle deformazioni anche in presenza di una topologia differenti tra i due oggetti.
 
 \begin{figure}[H]
 \begin{center}
@@ -269,7 +268,7 @@ Dopo la fase di rigging e di skinning automatico, in cui è stato generato e col
 In particolare, l'obiettivo è stato quello di \textbf{trasferire un'animazione umanoide preesistente}, proveniente da una sorgente esterna (come Mixamo), al modello personalizzato realizzato in Blender.
 
 Questa operazione, nota come \textbf{retargeting dell'animazione}, consiste nel mappare i movimenti di un rig sorgente su un rig di destinazione avente una struttura scheletrica diversa, ma compatibile a livello gerarchico.
-Nel contesto di questo lavoro, il retargeting ha permesso di riutilizzare animazioni di camminata o corsa tipiche di personaggi umanoidi per animare oggetti non convenzionati, come il \textit{piatto} o la \textit{tazzina con gambe}, generando un effetto dinamico coerente senza dever ricorrere a un'animazione manuale.
+Nel contesto di questo lavoro, il retargeting ha permesso di riutilizzare animazioni di camminata o corsa tipiche di personaggi umanoidi per animare oggetti non convenzionati, come il \textit{piatto} o la \textit{tazzina con gambe}, generando un effetto dinamico coerente senza dover ricorrere a un'animazione manuale.
 
 Il processo è stato sviluppato interamente in \textbf{Blender}, attraverso \textbf{script Python dedicati}, che automatizzano la fase di assegnazione dei vincoli di trasformazione tra rig sorgente e rig target. Questa automazione ha reso possibile un trasferimento accurato delle animazioni anche in presenza di differenze morfologiche significative tra i modelli, mantenendo la coerenza strutturale e la stabilità del movimento.
 
@@ -361,10 +360,10 @@ Le prestazioni sono state analizzate considerando:
 \begin{itemize}
     \item \textbf{FPS medi} durante la riproduzione dell'animazione
     \item \textbf{tempi di esecuzione} degli script di generazione dello scheletro e trasferimenti dei pesi.
-    \item impatto delle operazioni di rigginge retargeting sulla scena di Blender
+    \item impatto delle operazioni di rigging e retargeting sulla scena di Blender
 \end{itemize}
     
-L'intera procedura si è dimostrata efficiente per modelli complessità ridotta come quelli considerati, garatendo un'interazione fluida e un processo automatizzato rapido.
+L'intera procedura si è dimostrata efficiente per modelli complessità ridotta come quelli considerati, garantendo un'interazione fluida e un processo automatizzato rapido.
 
 \subsection{Limite tecnici e problematiche}
 

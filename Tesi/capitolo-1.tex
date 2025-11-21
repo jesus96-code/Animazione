@@ -63,7 +63,7 @@ Al contrario, una mesh animata varia la posizione dei suoi vertici nel tempo, se
 In pratica, una mesh animata non è solo una rappresentazione geometrica, ma un sistema dinamico che reagisce a vincoli, ossa  e forze esterne. La gestione efficiente di questa variazione temporale è ciò che rende possibile il movimento realistico nei personaggi e negli oggetti deformabili.
 
 \section{Trasformazioni geometriche}
-Nel contesto dell'animazione 3D, ogni elemento visivo - sia esso un personaggio o un oggetto - prende vita attraverso una combinazione di trasformazioni geometriche fondamentali: traslazione, rotazione s scalatura. Tali operazioni sono essenziali per finire le posizione, l'orientamento e la dimensione della mesh nello spazio tridimensionale, e vengono efficacemente rappresentate grazie all'uso di matrici 4x4 in coordinate omogenee. Queste matrici permettono la composizione sequenziale di più trasformazioni, garantendo un controllo elegante e coerente della deformazione e del movimento dei modelli.
+Nel contesto dell'animazione 3D, ogni elemento visivo - sia esso un personaggio o un oggetto - prende vita attraverso una combinazione di trasformazioni geometriche fondamentali: traslazione, rotazione e scalatura. Tali operazioni sono essenziali per finire le posizione, l'orientamento e la dimensione della mesh nello spazio tridimensionale, e vengono efficacemente rappresentate grazie all'uso di matrici 4x4 in coordinate omogenee. Queste matrici permettono la composizione sequenziale di più trasformazioni, garantendo un controllo elegante e coerente della deformazione e del movimento dei modelli.
 Parallelamente, l'uso di quaternioni offre un'alternativa potente e matematicamente robusta per la reppresentazione delle rotazioni 3D: evitando problemi come il gimbal-lock, consentendo interpolazioni fluide e una gestione stabile dell'orientamento negli scheletri animati, i quaternioni si affermano come strumento preferito nei motori grafici e nei sistemi di animazione professionali.
 
 Dal punto di vista matematico, tali trasformazioni vengono rappresentate mediante matrici 4x4, che consentono di gestire in modo unificato le operazioni dello spazio omogeneo. La composizione di più trasformazioni viene ottenuta attraverso la moltiplicazione delle rispettive matrici, seguendo in ordine preciso che influisce direttamente sul risultato finale.
@@ -82,7 +82,7 @@ Nel contesto della grafica e dell'animazione tridimensionale, ogni oggetto nello
 Per modificare queste proprietà si utilizzano le trasformazioni geometriche, operazioni matematiche che permettono di spostare (traslazione), ruotare (rotazione) o ridimensionare (scala) un modello 3D mantenendo la coerenza spaziale della scena.
 
 Tutte queste trasformazioni possono essere rappresentate mediante matrici 4x4, che consentono di combinare un'unica struttura i cambiamenti di posizione, orientamento e scala ~\cite{tras}. Questa rappresentazione matriciale è alla base della pipeline grafica moderna (in Blender, Unity e altri ambienti), poiché permette di applicare in modo efficiente e compatto più trasformazioni in sequenza attraverso la composizione matriciale.
-Di seguito vengono descritte le tre principali trasformazioni elementari che definiscono il comportamentp spaziale di una mesh o di un rig:
+Di seguito vengono descritte le tre principali trasformazioni elementari che definiscono il comportamento spaziale di una mesh o di un rig:
 
 \begin{itemize}
     \item \textbf{Traslazione 3D}
@@ -219,9 +219,9 @@ Infatti:\begin{align*}
     
 \end{itemize}
 
-\subsection{Rotazione con quaternioni: motivazione e vantaggi rispetto agli Euler angles(no gimbal lock)}
+\subsection{Rotazione con quaternioni: motivazione e vantaggi rispetto agli Euler angles (no gimbal lock)}
 Nel contesto della grafica tridimensionale, le trasformazioni geometriche costituiscono la base matematica attraverso cui è possibile descrivere la posizione e l'orientamento di un oggetto nello spazio. Storicamente, tali trasformazioni sono state rappresentate mediante matrici di trasformazione, che agiscono come uno stato di riferimento o "base": moltiplicando un vettore o una matrice per la matrice di trasformazione corrispondente, è possibile ottenere la nuova posizione o orientazione dell'oggetto nello spazio tridimensionale.
-Per la rappresentazione delle rotazioni, un approccio tradizionale è quello basato sugli angoli di Eulero, i quali definiscono l'orientamento di un corpo attraverso una sequenza ordinata di rotazioni elementari attorno agli assi principali del sistema di riferimento (X, Y, Z). Nonostante la loro intuitività, gli angoli di Eulero presentano alcune limitazioni pratiche, tra cui il problema di gimbal lock, che comporta la perdita di un grado di libertà nella rotazione quando due assi di rotazione si allineano.
+Per la rappresentazione delle rotazioni, un approccio tradizionale è quello basato sugli angoli di Eulero, i quali definiscono l'orientamento di un corpo attraverso una sequenza ordinata di rotazioni elementari attorno agli assi principali del sistema di riferimento (X, Y, Z). Sebbene intuitivi e storicamente molto diffusi, gli angoli di Eulero presentano alcune limitazioni, tra cui in particolare la possibilità di incontrare configurazioni critiche che riducano la stabilità della rotazione.
 
 Per superare tali problematiche, si è progressivamente affermato l'impiego dei \textbf{quaternioni}, una formulazione matematica più robusta ed efficiente per la gestione delle rotazioni tridimensionali. I quaternioni consentono di rappresentare in modo compatto un orientamento nello spazio e di calcolare rotazioni continue e interpolazioni fluide tra pose differenti, evitando le ambiguità e le discontinuità tipiche degli angoli di Eulero. La loro struttura, derivata dai numeri complessi, permette inoltre una maggiore stabilità numerica e una gestione più coerente delle rotazioni cumulative, rendendoli uno strumento esenziale nelle moderne pipeline di animazione e rigging.
 
@@ -230,16 +230,17 @@ Per superare tali problematiche, si è progressivamente affermato l'impiego dei 
     
     Gli angoli di Eulero rappresentano uno dei metodi più tradizionali per descrivere l'orientamento di un oggetto nello spazio tridimensionale. Essi contengono di esprimere una rotazione come una sequenza ordinata di tre rotazioni elementari attorno agli assi di un sistema di riferimento fisso, generalmente identificati come roll (x), pitch (y) e yaw (z).
     
-    Questa rappresentazione è intuitiva, poiché ogni angolo corrisponde a una rotazione attorno a un assi specifico, permettendo di comprendere facilmente il movimento nello spazio tridimensionale . Gli angoli di Eulero sono stati ampiamente utilizzati in diversi ambiti, tra cui la grafica computazionale, la robotica e l'ingegneria aerospaziale, grazie alla loro semplicità e compatibilità con numerosi software e framework.
+    Questa rappresentazione è intuitiva, poiché ogni angolo corrisponde a una rotazione attorno ad un asse specifico, permettendo di comprendere facilmente il movimento nello spazio tridimensionale. Gli angoli di Eulero sono stati ampiamente utilizzati in diversi ambiti, tra cui la grafica computazionale, la robotica e l'ingegneria aerospaziale, grazie alla loro semplicità e compatibilità con numerosi software e framework.
 
-    Tuttavia, questo metodo presenta anche alcune limitazioni strutturali. In particolare, soffre del fenomeno noto come gimbal lock, che si verifica quando due assi di rotazioni si allineano, provocando la perdita di un grado di libertà e rendendo instabile la rappresentazione. Inoltre, la dipendenza dall'ordine delle rotazioni (ad esempio, XYZ o ZYX) può portare a risultati diversi per la stessa configurazione, generando ambiguità nella definizione dell'orientamento.
-    Per questi motivi, pur rimanendo un approccio intuitivo e facilmente interpretabile, gli angoli di Eulerosono oggi spesso sostituiti dai quaternioni, che offrono una rappresentazione più stabile e continua delle rotazioni nello spazio tridimensionale ~\cite{quater}.
+    Tuttavia, tale rappresentazione soffre di limitazioni strutturali. In particolare, può verificarsi il fenomeno noto come gimbal lock, una condizione in cui due assi di rotazione diventano allineati, riducendo effettivamente i gradi di libertà del sistema. Questa degenerazione comporta instabilità numerica e ambiguità nell'orientamento, sopratutto quando si interagisce con pose molto articolate. Inoltre, l'ordine delle rotazioni (ad esempio, XYZ rispetto a ZYX) influenza direttamente il risultato finale, introducendo ulteriore ambiguità. ~\cite{quater}.
+
+    Per queste ragioni, nonostante la loro accessibilità concettuale, gli angoli di Eulero sono oggi spesso sostituiti dai quaternioni, i quali garantiscono una rappresentazione continua, priva di singularità e dunque più adatta ai contesti di animazione e rigging avanzato.
 
     \item \textbf{Rotazione con Quaternioni}
     
     Nello spazio tridimensionale una rotazione può essere descritta specificando un asse e un angolo di rotazione. Seguendo la convenzione comunemente adottata, una rotazione con angolo positivo viene eseguita in senso antiorario rispetto alla direzione dell'asse, mentre un angolo negativo genera una rotazione in senso orario.
 
-    La rappresentazione tramite asse e angolo, tuttavia, \textbf{non è univoca}: la stessa rotazionale può essere ottenuta scalando il vettore asse e modificando l'angolo di un multiplo 2${\pi}$, come si evidenza in figura ~\ref{fig:asse2}. Inoltre, la coppia (${v}$, ${\theta}$) produce la stessa rotazione della coppia (-${v}$ , -${\theta}$).
+    La rappresentazione tramite asse-angolo, tuttavia, \textbf{non è univoca}: la stessa rotazionale può essere ottenuta scalando il vettore asse e modificando l'angolo di un multiplo 2${\pi}$, come si evidenza in figura ~\ref{fig:asse2}. Inoltre, la coppia (${v}$, ${\theta}$) produce la stessa rotazione della coppia (-${v}$ , -${\theta}$).
     Anche se una rotazione può essere espressa tramite una matrice ortogonale 3x3, questa rappresentazione risulta ridondante e meno efficiente per i calcoli numerici.
 
     \begin{figure}[H]
@@ -282,19 +283,10 @@ Per superare tali problematiche, si è progressivamente affermato l'impiego dei 
         \begin{align*}
             | L_q(v) | = |v|
         \end{align*}
-        \item \textbf{Lacia invariati i vettori paralleli all'asse di rotazione}: se v è proporzionale a u, allora ${L_q(v) = v}$
+        \item \textbf{Lascia invariati i vettori paralleli all'asse di rotazione}: se v è proporzionale a u, allora ${L_q(v) = v}$
     \end{enumerate}
 
-    Queste proprietà mostrano ${L_q}$ rappresenti esattamente una \textbf{rotazione nello spazio tridimensionale} ~\cite{quater3}.
-    Più precisamente, per qualsiasi quaternioni unitario:
-    \begin{align*}
-        q = {\cos{(\theta/2)} + u\sin{(\theta/2)}}
-    \end{align*}
-    l'operazione q v ${p^*}$ applica al vettore ${v}$ un rotazione di ampiezza ${\theta}$ attorno all'asse ${u}$.
-
-    Gli angoli di Eulero, pur offrendo una rappresentazione intuitiva delle rotazioni tridimensionali, presentano diversi limiti che ne riducano l'efficacia in contesti complessi come l'animazione digitale  la robotica. Il principale problema è il fenomeno noto come gimbal lock, una condizione in cui due assi di rotazione diventano allineati, riducendo di fatto i gradi di libertà e impedendo di rappresentare alcune orientazioni in modo univoco.
-
-    Inoltre, le rotazioni espresse tramite angoli di Eulero sono dipendenti dall'ordine di applicazione (ad esempio XYZ, ZYX, ecc.) e questo comporta ambiguità nella rappresentazione dell'orientamento di un oggetto. Tale dipendenza può generare instabilità numeriche e comportamenti imprevisti, sopratutto quando le rotazioni vengono interpolate nel tempo - una condizione molto comune nei sistemi di animazione.
+    Queste proprietà dimostrano che l'operatore ${L_q}$ applica esattamente una rotazione di ampiezza $\theta$ attorno all'asse u ~\cite{quater3}. La compatezza e stabilità di tale rappresentazione la rendono particolarmente adatta alle applicazioni interattive.
 
     L'introduzione dei quaternioni ha permesso di superare queste limitazioni offrendo un modello matematicamente più stabile e continuo. Le principali motivazioni alla base del loro impiego sono le seguenti:
 
@@ -311,8 +303,8 @@ Per superare tali problematiche, si è progressivamente affermato l'impiego dei 
 \section{Rigging e Skinning}
 
 L'animazione di un personaggio digitale si basa sull'associazione tra la sua superficie visibile (mesh) e una struttura articolata interna (scheletro). Il processo che permette questa associazione è noto come rigging e consiste nell'allineare lo scheletro alla mesh e nel definire i pesi di skinning, i quali stabiliscono come il movimento di ciascun giunto influisca sui vertici della superficie. ~\cite{asmr}
-Quando si utilizzano dati di motion capture, può essere necessario adattare lo scheletro affinchè rispetti le proporzioni della mesh, per poi traferire (retargeting) il movimento originale al nuovo scheletro.
-In questo contesto, la configurazione dello scheletro riguarda sia le sue caratteristiche geometriche (come scala e lunghezza delle ossa) sia la sua struttura gerarchica (numero e disposizione dei giunti), Allo stesso modo, la configurazione della mesh comprende sia le sue proporzioni volumetriche sia la topologia dei vertici che la compongono.
+Quando si utilizzano dati di motion capture, può essere necessario adattare lo scheletro affinchè rispetti le proporzioni della mesh, per poi trasferire (retargeting) il movimento originale al nuovo scheletro.
+In questo contesto, la configurazione dello scheletro riguarda sia le sue caratteristiche geometriche (come scala e lunghezza delle ossa) sia la sua struttura gerarchica (numero e disposizione dei giunti). Allo stesso modo, la configurazione della mesh comprende sia le sue proporzioni volumetriche sia la topologia dei vertici che la compongono.
 
 \subsection{Concetto di scheletro e relazione con la mesh}
 
@@ -340,7 +332,7 @@ La mesh rappresenta invece la superficie visibile del modello ed è formata da u
 dove \(N_v\) è il numero totale di vertici della mesh
 Questi vertici descrivono la forma dell'oggetto nella sua posa di riposo.
 
-Per far muovere la mesh insieme allo scheletro si utilizza un processo detto skinning, dove ogni vertici è associato a uno o più giunti tramite pesi di influenza:
+Per far muovere la mesh insieme allo scheletro si utilizza un processo detto skinning, dove ogni vertice è associato a uno o più giunti tramite pesi di influenza:
 \begin{align*}
     {w_{ij}} \geq 0   ,    \sum_{j=1}^{N_j} {w_{ij}} = 1
 \end{align*}
@@ -410,7 +402,7 @@ Nonostante la sua semplicità ed efficienza, l'LBS presenta alcune limitazioni n
 \subsection{Weight Painting e associazione ossa-vertici}
 
 Una volta definito lo scheletro, la mesh deve essere collegata ai giunti in modo che ogni movimento delle ossa si rifletta sul modello. Questo collegamento è realizzato tramite l'assegnazione di pesi ai vertici (skinning weights). 
-Ogni vertice della mesh appartiene a uno o più vertex group, ciascuno associato a un'osso.
+Ogni vertice della mesh appartiene a uno o più vertex group, ciascuno associato a un osso.
 Il peso \({w_{ij}}\) indica quanto l'osso j influenza il vertice i.
 \begin{align*}
     0 \leq {w_{ij}} \leq 1     ,   \sum_{j} {w_{ij}} = 1
@@ -445,7 +437,7 @@ La corretta assegnazione dei pesi (figura~\ref{fig:we}) è essenziale per ottene
 
 Negli ultimi anni, la ricerca ha introdotto metodi che mirano ad automatizzare ulteriormente questo processo, riducendo la necessità di intervento manuale e migliorando la qualità dello skinning anche su mesh complesse. Tra questi, si distinguono approcci basati su modelli generativi e apprendimento automatico. Ad esempio, alcuni sistemi recenti, come \textbf{UniRig} ~\cite{uni}, propongono un generatore unico in grado di produrre scheletri e pesi di skinning coerenti partendo dalla sola geometria della mesh. In modo simile, metodi come \textbf{ASMR} ~\cite{asmr} introduco strategie adattive per prevedere automaticamente la distribuzione dei pesi, sfruttando descrittori geometrici avanzati per individuare le aree di articolazione.
 
-Sebbene tali tecniche non sostituiscano completamente le procedure tradizionali, rappresentano un'evoluzione importante nelle pipeline di rigging moderne, offrendo soluzioni più robuste e generalizzabili e riducendo i tempi di preparazione dei modelli. In questo senso, lo skinning non è più solo un processo manuale, ma si colloca all'interno di un più ampio panorama di metodi automatizzati che mirano a rendere la deformazione della meshpiù accurata, stabile e riutilizzabile.
+Sebbene tali tecniche non sostituiscano completamente le procedure tradizionali, rappresentano un'evoluzione importante nelle pipeline di rigging moderne, offrendo soluzioni più robuste e generalizzabili e riducendo i tempi di preparazione dei modelli. In questo senso, lo skinning non è più solo un processo manuale, ma si colloca all'interno di un più ampio panorama di metodi automatizzati che mirano a rendere la deformazione della mesh più accurata, stabile e riutilizzabile.
 
 
 \section{Retargeting dell'animazione}
@@ -475,7 +467,7 @@ Con l'evoluzione del machine learning, sono stati studiati approcci che sfruttan
 In sintesi, il motion retargeting si è evoluto da metodi basati su ottimizzazione e IK a soluzioni neurali che apprendono direttamente lo spazio delle pose, con l'obiettivo di gestire scheletri eterogenei e movimenti complessi in modo più robusto ed automatizzato.
 
 \subsection{Introduzione ai metodi automatici: UniRig e ASMR come approcci moderni}
-Negli ultimi anni, il campo del motion retargeting ha visto la diffusione di metodi automatici capaci di trasferire animazioni tra personaggi con proporzioni corporee o strutture scheletriche differenti, riducento al minimo l'interveto manuale. Questi approcci sfruttano modeli statistic o reti neurali per apprendere la relazione tra pose, scheletri e deformazioni della mesh, con l'obiettivo di preservare la naturalezza del movimento durante il trasferimento.
+Negli ultimi anni, il campo del motion retargeting ha visto la diffusione di metodi automatici capaci di trasferire animazioni tra personaggi con proporzioni corporee o strutture scheletriche differenti, riducendo al minimo l'interveto manuale. Questi approcci sfruttano modeli statistici o reti neurali per apprendere la relazione tra pose, scheletri e deformazioni della mesh, con l'obiettivo di preservare la naturalezza del movimento durante il trasferimento.
 Tra i metodi recenti, si possono distinguere due linee principali:
 
 \paragraph{Metodi basati su adattamento geometrico (es. UniRig)}
@@ -485,8 +477,8 @@ Questi metodi sono particolarmente utili quando si lavora con mesh prive di rig 
 
 \paragraph{Metodi basati su apprendimento (es. ASMR)}
 
-approcci come ASMR utilizzano reti neurali per apprendere direttamente il processo id retargeting. Il modello  è addestrato su numerosi esempi di movimenti eseguiti da scheletri differenti, imparando a mantenere la coerenza del gesto indipendentemente dalla struttura del personaggio.
-Rispetto ai metodi puramente geometrici, tali tecniche possono addattare automaticamente lo stile del movimento e ridurre distorsioni o artefatti durante la deformazione.
+approcci come ASMR utilizzano reti neurali per apprendere direttamente il processo di retargeting. Il modello  è addestrato su numerosi esempi di movimenti eseguiti da scheletri differenti, imparando a mantenere la coerenza del gesto indipendentemente dalla struttura del personaggio.
+Rispetto ai metodi puramente geometrici, tali tecniche possono adattare automaticamente lo stile del movimento e ridurre distorsioni o artefatti durante la deformazione.
 
 In sintesi UniRig e ASMR rappresentano due direzioni complementari nel motion retargeting moderno:
 \begin{itemize}
