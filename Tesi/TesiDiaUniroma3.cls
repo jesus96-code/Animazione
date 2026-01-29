@@ -50,6 +50,10 @@
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{physics}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{tabularx}
+
+\captionsetup[listing]{name=Script}
 
 % header personalizzati
 \let\footruleskip\relax % for compatibility of memoir and fancyhdr

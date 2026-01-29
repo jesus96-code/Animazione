@@ -1,385 +1,213 @@
-\section{Preparazione dei modelli}
+Il presente capitolo è dedicato all'analisi dei risultati ottenuti applicando la pipeline descritta nel Capitolo 3 e al confronto tra i diversi approcci e algoritmi considerati. Al fine di evitare ridondanze, in questa sezione vengono riportate esclusivamente le informazioni necessarie all'interpretazione dei risultati sperimentali, mentre i dettagli metodologici relativi al rigging, allo skinning e al retargeting automatico sono stati già discussi nei capitoli precedenti.
 
-La preparazione dei modelli costituisce un passaggio fondamentale nella pipeline di animazione 3D, poiché determina sia la struttura geometrica degli oggetti sia la configurazione dello scheletro necessario per il loro movimento. In questo capitolo, si descrive il processo seguito per la creazione di modelli modulari e per la generazione automatica di un rigging iniziale utilizzando \textbf{Blender} come ambiente di lavoro principale.
+Gli esperimenti sono stati condotti su oggetti 3D inanimati e non antropomorfi, utilizzando le stesse animazioni di input per tutti gli approcci, così da garantire condizioni di confronto omogenee. I risultati sono presentati principalmente sotto forma di confronti visivi e di una valutazione quantitativa basata su una metrica di errore definita ad hoc, finalizzata a misurare il grado di discostamento da un risultato ritenuto ottimale.
 
-L'obiettivo di questa fase è duplice: da un lato, garantire che le mesh siano organizzate e pronte per essere animate; dall'altro, creare uno scheletro coerente e funzionale, in grado di supportare deformazioni realistiche e di integrarsi con animazioni predefinite. Per facilitare questo processo, sono stati impiegati riferimenti a scheletri umanoidi standard, adattati alle specificità dei modelli utilizzati.
+Nelle successive vengono analizzati separatamente i risultati delle diverse fasi di pipeline (rigging, skinning e retargeting) e viene infine fornito un confronto complessivo tra gli approcci considerati.
 
-\subsection{Descrizione della mesh}
+\section{Risultati del rigging automatico}
 
-La fase di definizione delle mesh costituiscce il primo passo nella preparazione dei modelli per l'animazione in Blender. In questo lavoro, i modelli sono stati realizzati in forma modulare, al fine di consentire una gestione semplice e flessibile delle diverse componenti durante la fase di rigging, skinning e animazione.
+In questa sezione vengono presentati i risultati ottenuti nella fase di rigging automatico applicando gli approcci UniRig e RigAnything agli oggetti 3D inanimati descritti nel Capitolo 3.
+Sono stati considerati esclusivamente questi due metodi in quanto entrambi includono una fase di generazione automatica dello scheletro a partire della mesh, rendendo possibile un confronto diretto.
 
-I modelli principali utilizzati sono i seguenti: 
-\begin{itemize}
-    \item \textbf{Piatto con gambe}: rappresenta una struttura base costituita da una mesh piana (piatto) che funge da corpo principale, integrata con due gambe posizionate simmetricamente per consentire il movimento verticale e traslatorio. Questa configurazione permette di testare deformazioni e animazioni di base come camminata o rotazioni.
-    \item \textbf{Piattino con tazzina e gambe}: questa combinazione rappresenta una forma più complessa, in cui la tazzina è posizionata sopra il piattino, entrambi supportati da due gambe. Tale struttura offre un maggiore livello di articolazione e permette di sperimentare il comportamento delle mesh durante animazioni più complesse, simulando un personaggio modulare con elementi sovrapposti.
-\end{itemize}
+Per ciascun oggetto, il rig generato è stato analizzato dal punto di vista del posizionamento delle ossa, della coerenza strutturale con la geometria della mesh e della copertura delle parti articolabili.
 
-Ogni mesh è stata importata in Blender come oggetto separato, con una propria origine e pivot point, per facilitare l'allineamento con lo scheletro e garantire una corretta deformazione durante l'animazione. L'approccio modulare consente inoltre di sostituire o modificare singoli componenti senza compromettere l'intera struttura del modello.
+\subsection{Confronto visivo del rigging}
 
 \begin{figure}[h]
 \centering
 \begin{subfigure}{0.45\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figure/piatto.png}
-    \caption{Piatto con gambe}
+    \includegraphics[width=\linewidth]{figure/rigging.png}
+    \caption{Rigging generate da UniRig}
 \end{subfigure}
 \hfill
 \begin{subfigure}{0.45\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figure/tazza.png}
-    \caption{Piattino con tazzina e gambe}
+    \includegraphics[width=\linewidth]{figure/wireframe.png}
+    \caption{Rigging generate da RigAnything}
 \end{subfigure}
-\caption{Mesh dei modelli in Blender}
+\caption{Risultato del rigging automatico}
+\label{fig:rigging}
 \end{figure}
 
-\subsection{Creazione dello scheletro iniziale (da rig umanoide)}
+La figura ~\ref{fig:rigging} mostra il confronto visivo tra le strutture di rigging generate da UniRig e RigAnything sul modello del piatto con due gambe. Nel caso di UniRig, lo scheletro generato è rappresentato da un'armature esplicita, con ossa chiaramente allineate alle principali componenti strutturali dell'oggetto, in particolare alle due gambe e alla poszione centrale del piatto.
 
-La definizione dello scheletro iniziale rappresenta il passaggio fondamentale per consentire l'animazione di un modello. Lo \textbf{scheletro}, o \textit{rig}, è costituito da una struttura gerarchica (Figura ~\ref{fig:gera}) di ossa che permette la deformazione controllata delle mesh durante il movimento. La scelta di utilizzare un \textbf{rig umanoide come riferimento}, come si evidenza in figura ~\ref{fig:scheletro}, deriva dalla necessità di disporre di una struttura articolare coerente, facilmente adattabile a modelli anche non antropomorfi.
+Per RigAnything, la struttura di controllo non è espressa tramite un'armature tradizionale, ma attraverso controlli impliciti che guidano la deformazione della mesh. Tali controlli sono visualizzati medianti punti di controllo sovrapposti alla mesh e tramite la visualizzazione wireframe, evidenziandole regioni soggette a movimento.
 
-\begin{figure}[h]
-\begin{center}
-     \includegraphics[width=8cm]{figure/scheletro.png}
-     \caption{Struttura gerarchica} \label{fig:scheletro}
-\end{center}
+\subsection{Analisi qualitativa}
+L'analisi qualitativa dei risultati evidenzia come UniRig e RigAnything adottino strategie differenti nella fase di rigging automatico, ottimizzando aspetti diversi del problema.
+
+Dal punto di vista strutturale, UniRig genera un'armatura esplicita, semanticamente interpretabile e direttamente utilizzabile all'interno delle pipeline di animazione tradizionali basati su scheletri. La presenza di ossa chiaramente definite facilita le successive fasi di skinning e retargeting , risultando particolarmente vataggiosa in contesti in cui è richiesto un controllo esplicito della struttura dell'oggetto.
+
+RigAnything, invece, non produce uno scheletro esplicito, ma utilizza una struttura di controllo implicita che privilegia la stabilità della deformazione della mesh. Questo approccio consente una maggiore flessibilità nel tratamento di geometrie non antropomorfe, ma riduce l'interpretabilità del rig e la sua integrazione diretta con strumenti di animazione scheletrica standard.
+
+In sintesi, UniRig risulta più adatto a scenari in cui è richiesta una rappresentazione strutturale chiara del rig, mentre RigAnything mostra vantaggi nella gestione della deformazione, sopratutto in presenza di geometrie articolate e non convenzionali. Nessuno dei due approcci risulta pertanto globalmente superiore, ma ciascuno presenta punti di forza specifici in funzione del criterio di valutazione considerato.
+
+\section{Risultato dello skinning}
+
+In questa sezione vengono analizzati i risultati ottenuti nella fase di skinning automatico valutando la qualità delle deformazioni prodotte durante l'animazione degli oggetti 3D. Lo skinning è stato applicato agli scheletri e alle strutture di controllo generati nella fase di rigging, mantenendo invariata l'animazione di input per tutti gli approccii.
+
+\subsection{Confronto visivo delle deformazioni}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figure/skinning.png}
+    \caption{Skinning generate da UniRig}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figure/peso.png}
+    \caption{Skinning generate da RigAnything}
+\end{subfigure}
+\caption{Risultato dello skinning automatico}
+\label{fig:skinning}
 \end{figure}
 
-Un rig umanoide standard generalmente composto da elementi ricorrenti, quali:
-\begin{itemize}
-    \item una colonna strutturale centrale (spina dorsale);
-    \item due arti inferiori con articolazione dell'anca, del ginocchio e della caviglia;
-    \item due arti superiori con articolazione della spalla, del gomito e del polso;
-    \item un nodo centrale di orientamento (pelvis o root).
-\end{itemize}
+La figura ~\ref{fig:skinning} mostra un confronto visivo delle deformazioni ottenute applicando lo skinning automatico ai rig generati da UniRig e RigAnything sul modello del piatto con due gambe, in corrispondenza di frame rappresentativi dell'animazione.
 
-Sebbene i modelli trattati in questo lavoro non riproducano figure umane, la \textbf{logica articolare umanoide} risulta comunque utile. Le "gambe" dei modelli, infatti, devono essere in grado di simulare movimenti come passo, flessione o rotazione, che trovano un riferimento diretto nelle articolazioni del corpo umano.
+Nel caso di UniRig, la deformazione della mesh risulta coerente con la struttura scheletrica esplicita, ma sono visibili lievi artefatti locali in prossimità delle giunzioni tra le gambe e il piatto, dovuti alla distribuzione dei pesi di influenza sui vertici.
 
-\begin{figure}[h]
-\begin{center}
-     \includegraphics[width=8cm]{figure/gerar.png}
-     \caption{Struttura scheletrica} \label{fig:gera}
-\end{center}
-\end{figure}
+Per RigAnything, la deformazione appare più uniforme lungo le parti articolate, con una riduzione degli artefatti locali nelle regioni di maggiore movimento. Tuttavia, la mancanza di una struttura ossea esplicita rende meno inmediata l'individuazione delle regioni di controllo responsabili della deformazione.
 
-L'adozione di una \textbf{struttura scheletrica standardizzata} offre inoltre due vantaggi rilevanti:
-\begin{enumerate}
-    \item \textbf{Compatibilità con librerie di animazioni esistenti:}
+\subsection{Analisi qualitativi dello skinning}
 
-    un rig umanoide consente di utilizzare animazioni già pronte, riducendo la necessità di creare ogni movimento manualmente.
-    \item \textbf{Facilità di adattamento (retargeting):}
+L'analisi quantitativa evidenzia come la qualità dello skinning sia fortemente influenzata dalla struttura di rigging sottostante.
 
-    la corrispondenza tra ossa standard rende possibile trasferire animazioni da un modello all'altro, anche quando le proporzioni o le forme sono differenti.
-\end{enumerate}
+Nel caso di UniRig, la presenza di un'armature esplicita consente una chiara associazione tra ossa e regioni della mesh, facilitando il controllo della deformazione e l'eventuale intervento correttivo. Tuttavia, lo skinning automatico risulta più sensibile alla complessità geometrica, mostrando artefatti locali in corrispondenza di giunzioni non perfettamente allineate alla struttura scheletrica.
 
-In sintesi, la creazione dello scheletro iniziale si basa sulla definizione di una struttura ossea coerente, gerarchica e compatibile con sistemi di animazione già esistenti. Nel punto successivo verrà descritta l'applicazione pratica di questo processo.
+RigAnything, utilizzando una struttura di controllo implicita, privilegia la stabilità complessiva della deformazione, producendo risultati visivamente più uniformi nelle regioni articolate. Questo approccio riduce la presenza di collassi locali e stretching eccessivo, ma sacrifica parzialmente l'interpretabilità del processo di skinning.
 
-\section{Implementazione del rigging automatico in Blender}
+In sintesi, UniRig offre un maggiore controllo strutturale dello skinning, risultando vantaggioso in scenari in cui è richiesta un'animazione scheletrica tradizionale, mentre RigAnything mostra una maggiore robustezza nella deformazione automatica di oggetti 3D non antropomorfi.
 
-La generazione automatica di scheletri tridimensionali rappresenta una delle problematiche centrali nell'ambito dell'animazione digitale. Essa consiste nel definire una struttura articolata che consenta di deformare in modo realistico una mesh 3D durante il movimento. La predizione di una struttura scheletrica valida a partire da una mesh tridimensionale è un compito complesso, in quanto richiede di catturare sia la geometria sia la topologia dell'oggetto, mantenendo relazioni coerenti tra le diverse articolazioni.
+\section{Risultato del retargeting delle animazioni}
 
-I metodi tradizionali di rigging automatico si basano spesso su modelli o schemi predefiniti, progettati per una gamma limitata di morfologie. Tuttavia, tali approcci risultano poco flessibili e mostrano difficoltà nel gestire modelli con strutture non convenzionali o topologie molto diverse da quelle umane. Per superare questi limiti, le ricerche più recenti hanno proposto approcci di tipo \textbf{sequenziale} o \textbf{autoregressivo}, in cui lo scheletro viene generato passo dopo passo, prevedendo la posizione di ogni nuovo giunto in relazione a quelli già creati. In questo modo, la costruzione della struttura ossea tiene conto della dipendenza gerarchica tra le articolazioni e della forma complessiva della mesh, garantendo una maggiore coerenza del risultato finale.
+In questa sezione vengono analizzati i risultati ottenuti nella fase di retargeting delle animazioni, valutando la capacità dei diversi approcci di trasferire correttamente il movimento da una sorgente animata a oggetti 3D inanimati.
+Le animazioni di input, provenienti da Mixamo o MoveAI, sono state applicate utilizzando la stessa pipeline per tutti i metodi, così da garantire condizioni di confronto omogenee.
 
-Un ulteriore problema affrontato da tali metodi riguarda la rappresentazione computazionale dello scheletro. Rappresentare una struttura gerarchica in un formato sequenziale non è banale, poichè occorre descrivere sia le coordinate spaziali delle ossa sia le relazioni di parentela tra esse. Soluzioni semplicistiche, che ordinano le ossa secondo percorsi predefiniti, possono introdurre ridondanza e inefficienze, oltre a rendere diffcile il rispetto dei vincoli strutturali.
-
-Per gestire in modo efficace queste relazioni, alcuni approcci moderni propongono tecniche di \textbf{codifica strutturale} che discretizzano le informazioni spaziali e gerarchiche dello scheletro, in modo da preservarne la coerenza tipologica. Tali strategie consentono di ottenere scheletri più flessibili, adattabili e correttamente articolati, anche nel caso di modelli non organici o con forme atipiche.
-
-I principi teorici alla base di queste metodologie hanno fornito la base concettuale per lo sviluppo di procedure automatizzate di rigging, come quelle realizzata in Blender mediante script Python, descritta nella sezione successiva.
-
-
-\subsection{Generazione dello scheletro adattato all'oggetto}
-
-A partire dai principi teorici descritti nella sezione precedente, è stata sviluppata una procedura di \textbf{rigging automatico} all'interno di \textit{Blender}, con l'obiettivo di generare in modo semi-automatizzato lo scheletro di oggetti tridimensionali non convenzionali, come un piatto o una tazzina dotati di gambe. Il processo è stato realizzato attraverso uno script \textit{Python} personalizzato, concepito per adattare un rig umanoide esistente alla morfologia del nuovo modello, riducendo l'intervento manuale richiesto nel rigging tradizionale.
-
-Il metodo di implementazione prevede diverse fasi operative:
-
-\begin{enumerate}
-    \item \textbf{Duplicazione del rig sorgente}
-
-    Il punto di partenza è costituito da un rig umanoide di riferimento, già presente nella scena di Blender. Lo script ne crea una copia indipendente, mantenendone la struttura di base e i vincoli di orientamento. Questa operazione consente di preservare l'integrità del modello sorgente e di riutilizzare la sua gerarchia ossea come struttura iniziale per il nuovo oggetto.
-
-    \begin{minted}[fontsize=\small, bgcolor=lightgray, frame=lines, breaklines]{python}
-    src = bpy.data.objects.get(SOURCE_RIG) #recupera l'oggetto armatura sorgente dalla collezione bpy.data.objects
-    if not src:
-        raise Exception(f"❌ Rig sorgente '{SOURCE_RIG}' non trovato!") #se non esiste, solleva un'eccezione per fermare l'esecuzione
-    
-    plate_rig = src.copy()
-    plate_rig.data = src.data.copy()
-    plate_rig.name = NEW_RIG_NAME
-    bpy.context.collection.objects.link(plate_rig) # collega la copia alla collezione
-    bpy.context.view_layer.objects.active = plate_rig # la seleziona come oggetto attivo
-    \end{minted}
-
-    \item \textbf{Riduzione e semplificazione della struttura scheletrica}
-
-    Poiché l'obiettivo è quello di animare un oggetto con caratteristiche morfologiche ridotte rispetto a un corpo umano, lo script elimina automaticamente le ossa non necessarie (braccia, colonna vertebrale, mani, ecc.), mantenendo soltanto la parte inferiore dei rig - anca, gamba e piedi - sufficiente per conferire al modello la possibilità di movimento e stabilità.
-
-    \begin{minted}[fontsize=\small, bgcolor=lightgray, frame=lines, breaklines]{python}
-    # Passa in modalità edit mode per poter modificare l'elenco delle ossa; ebones fornisce accesso alle ossa in modalità edit
-    bpy.ops.object.mode_set(mode='EDIT')
-    ebones = plate_rig.data.edit_bones
-
-    # Mantieni solo la parte inferiore del corpo
-    keep = [
-    "mixamorig:Hips",
-    "mixamorig:LeftUpLeg", "mixamorig:LeftLeg", "mixamorig:LeftFoot",
-    "mixamorig:RightUpLeg", "mixamorig:RightLeg", "mixamorig:RightFoot"
-    ]
-    \end{minted}
-
-    \item \textbf{Ricostruzione della gerarchia delle ossa}
-
-    Dopo la rimozione delle parte superflue, vengono ristabilite le connessioni parent-child tra le ossa rimanenti, preservando la sequenza logica "Hips $\rightarrow$ UpLeg $\rightarrow$ Leg $\rightarrow$ Foot". In questo modo il rig conserva una struttura coerente con il sistema di animazione di Blender e risulta pienamente compatibile con il motore di animazione.
-
-   \begin{minted}[fontsize=\small, bgcolor=lightgray, frame=lines, breaklines]{python}
-    #Ricostruisci le connessioni parent-child, questo garantisce che il comportamento di propagazione delle trasformazioni sia coerente
-    for side in ["Left", "Right"]:
-    up = ebones.get(f"mixamorig:{side}UpLeg")
-    leg = ebones.get(f"mixamorig:{side}Leg")
-    foot = ebones.get(f"mixamorig:{side}Foot")
-    hips = ebones.get("mixamorig:Hips")
-
-    if up and hips:
-        up.parent = hips
-    if leg and up:
-        leg.parent = up
-    if foot and leg:
-        foot.parent = leg
-    \end{minted}
-
-    \item \textbf{Allineamento geometrico con la mesh}
-
-    Una volta semplificato e ricostruito, lo scheletro viene riposizionato in modo automatico in relazione alla mesh dell'oggetto. Lo script calcola il \textit{bounding box} della geometria e ne individua il centro, in modo da posizionare correttamente le articolazioni principali (anca e gambe) in base alla scala e alla simmetria dell'oggetto. Questa operazione consente di ottenere un rig proporzionato o perfettamente adattato al modello 3D.
-    \begin{minted} [fontsize=\small, bgcolor=lightgray, frame=lines, breaklines]{python}
-        # Riallinea il rig al centro del piatto
-        bbox = [plate.matrix_world @ mathutils.Vector(corner) for corner in plate.bound_box]
-        center = sum(bbox, mathutils.Vector()) / 8.0
-        min_z = min(v.z for v in bbox)
-        max_z = max(v.z for v in bbox)
-        x_min = min(v.x for v in bbox)
-        x_max = max(v.x for v in bbox)
-        
-        hips = ebones.get("mixamorig:Hips")
-        hips.head = center
-        hips.tail = center + mathutils.Vector((0, 0, (max_z - min_z) * 0.2))
-        
-        for side, x_factor in [("Left", x_min * 0.7), ("Right", x_max * 0.7)]:
-        up = ebones.get(f"mixamorig:{side}UpLeg")
-        if up:
-            up.head = center + mathutils.Vector((x_factor, 0, 0))
-    \end{minted}
-
-    \item \textbf{Output finale}
-
-    Al termine dell'esecuzione dello script Python, viene generato uno \textbf{scheletro adattato alla geometria dell'oggetto}, con una gerarchia coerente e correttamente allineata alla mesh. In questa fase, tuttavia, il rig non è ancora completamente pronto per l'animazione, poiché \textbf{non è stato eseguito lo skinning}, ovvero il processo di associazione dei vertici della mesh alle ossa con pesi di influenza.
-\end{enumerate}
+\subsection{Confronto visivo del retargeting}
 
 \begin{figure}[H]
 \begin{center}
-     \includegraphics[width=6cm]{figure/piattoRig.png}
-     \caption{Rig Umanoide} \label{fig:scheletro}
-\end{center}
-\end{figure}
-
-L'approccio adottato rappresenta una versione semplificata dei metodi di rigging automatico più avanzati, traducendo in una procedura pratica alcuni dei principi teorici descritti nel capitolo precedente. Pur non implementando algoritmi di previsioni basati su modelli neurali o processi autoregressivi, lo script sviluppato in Blender consente di ottenere una \textbf{configurazione scheletrica adattativa}, riducendo in modo significativo i tempi di preparazione del rig e permettendo l'applicazione di animazione predefinite anche a modelli non organici.
-
-\section{Implementazione dello skinning automatico in Blender}
-
-Dopo la generazione automatica dello scheletro, la fase successiva del processo consiste nell'associazione tra la mesh nell'oggetto e la struttura scheletrica, ovvero lo \textbf{skinning}. Lo skinning rappresenta un passaggio fondamentale nel rigging, poichè determina in che modo i vertici della mesh si deformano in risposta ai movimenti delle ossa. L'obiettivo di questa fase è garantire una \textbf{deformazione realistica e coerente} dell'oggetto durante l'animazione, riducendo al minimo le distorsioni indesidetate.
-
-Nel contesto di questo progetto, lo skinning è stato implementato in \textit{Blender} attraverso un \textbf{procedimento automatico}, con l'obiettivo di trasferire i pesi di influenza da un modello sorgente (un rig umanoide già animato) a un oggetto non organico, come un piatto o una tazzina dotati di gambe.
-
-\subsection{Trasferimento pesi con algoritmi automatici}
-
-Nel contesto della generazione automatica di rig, un aspetto fondamentale riguarda la previsone dei pesi di skinning, ovvero i coefficienti che definiscono l'influenza di ciascun osso sui vertici della mesh.
-La determinazione di questi pesi è un problema di natura complessa, poichè implica la definizione di una matrice ad alta dimensionalità, in cui ogni riga corrisponde a un vertice della mesh e ogni colonna a un osso del rig. Nei modelli tridimensionali di alta risoluzione, tale matrice può raggiungere dimensioni considerevoli, rendendo il processo computazionalmente oneroso.
-
-Le ricerche più recenti in ambito accademico hanno proposto approcci data-driven e basati su reti neurali autoregressive per stimare automaticamente tali pesi, integrando anche parametri aggiuntivi legali alle proprietà fisiche delle articolazioni (come rigità o gravità).
-Questi metodi sfruttano meccanismi di cross-attention per modellare in modo efficiente la relazione tra la topologia dello scheletro e la geometria della mesh, migliorando la coerenza del movimento e la qualità della deformazione.
-
-Nel caso di questo progetto, pur non adottando una soluzione di apprendimento automatico, lo \textit{skinning automatico} è stato implementato in Blender sequendo la stessa logica di corrispondenza tra ossa e vertici, ma attraverso uno script Python dedicato che trasferisce i pesi da un modello sorgente già pesato a un oggetto target.
-Lo script esegue le seguenti operazioni principali:
-
-\begin{enumerate}
-    \item \textbf{Selezione delle ossa rilevanti}: vengono mantenuti esclusivamente i gruppi di pesi relativi alla parte inferiore del corpo, coerenti con lo scheletro generale nella fase precedente.
-    
-    \begin{minted}[fontsize=\small, bgcolor=lightgray, frame=lines, breaklines]{python}
-    # Ossa da trasferire (bacino + gambe)
-    # bones_to_keep: è la lista delle ossa rilevanti che verrano considerate durente il trasferimento
-    bones_to_keep = [
-    "mixamorig:Hips",
-    "mixamorig:LeftUpLeg", "mixamorig:LeftLeg", "mixamorig:LeftFoot",
-    "mixamorig:RightUpLeg", "mixamorig:RightLeg", "mixamorig:RightFoot"]
-    \end{minted}
-
-    \item \textbf{Copia dei gruppi di vertici}: per ogni osso selezionato, lo script copia i pesi corrispondenti a ciascun vertice, limitandosi ai valori effettivamente significativi (pesi maggiore di zero).
-
-    \item \textbf{Creazione di nuovi gruppi di influenza}: per la mesh target, vengono generati automaticamente nuovi \textit{vertex group} corrispondenti alle ossa selezionate, garantendo la compatibilità con il rig del nuovo modello.
-\end{enumerate}
-
-\paragraph{Estratto del codice Python}.
-Un frammento rappresentativo dello script utilizzato in Blender mostra la copia dei gruppi di vertici e la creazione di nuovi gruppi di influenza
-
-\begin{minted}[fontsize=\small, bgcolor=lightgray, frame=lines, breaklines]{python}
-    plate = bpy.data.objects.get(PLATE_OBJ) # conserva tutti gli oggetti nella variabile globale
-    source_mesh = bpy.data.objects.get(SOURCE_MESH)
-    
-    if not plate or not source_mesh:
-        raise Exception("❌ Mesh non trovata!")
-    
-    # ================= TRASFERIMENTO PESI OTTIMIZZATO =================
-    # Cancella eventuali vertex group già presenti sul piatto, che serve per evitare conflitti o 
-    # duplicazioni dei pesi provenienti da precedenti tentativi di rigging
-    plate.vertex_groups.clear()
-    
-    # Copia solo i gruppi delle ossa selezionate
-    for vg in source_mesh.vertex_groups:
-        if vg.name in bones_to_keep:
-            # crea un nuovo gruppo di vertici sulla mesh del piatto
-            new_vg = plate.vertex_groups.new(name=vg.name)
-            # scorre tutti i vertici della mesh sorgente
-            for i, v in enumerate(source_mesh.data.vertices):
-                try:
-                    w = vg.weight(i)
-                    if w > 0.0:  # copia solo pesi maggiori di zero, che il vertice è influenzato
-                                 # da quell'osso
-                        new_vg.add([i], w, 'REPLACE') # aggiungi quel peso al corrispondente vertice
-                                                      # della mesh targata
-                except RuntimeError:
-                    pass  # vertice non presente nel gruppo
-\end{minted}
-
-Questo frammento mostra come il sistema filtri automaticamente i pesi pertinenti e li assegni ai vertici correspondenti del nuovo modello. Il risultato è una \textbf{mappatura coerente tra ossa e mesh}, che consente di preservare la qualità delle deformazioni anche in presenza di una topologia differenti tra i due oggetti.
-
-\begin{figure}[H]
-\begin{center}
-     \includegraphics[width=6cm]{figure/pesi.png}
-     \caption{Pesi assegnati alla mesh} \label{fig:scheletro}
-\end{center}
-\end{figure}
-
-\subsection{Collegamento mesh-scheletro e gestione delle deformazioni}
-Dopo il trasferimento dei pesi, la mesh viene collegata al rig mediante un modificatore di tipo \textit{Armature}, che permette a Blender di calcolare in tempo reale la deformazione dei vertici in base ai movimenti delle ossa.
-Questo collegamento è del tutto automatico e viene completato senza intervento manuale, risultando in un processo di skinning completamente automatizzato.
-
-L'efficacia del metodo è stata verifica attraverso test di animazione, applicando cicli di camminata e movimenti dinamici. I risultati mostrano che la deformazione delle gambe avviene in maniera stabile e coerente, con una buona trasmissione del movimento anche su modelli privi di articolazioni naturali.
-
-\section{Retargeting dell'animazione}
-
-Dopo la fase di rigging e di skinning automatico, in cui è stato generato e collegato lo scheletro al modello tridimensionale del piatto, la fase successiva ha riguardato l'\textbf{applicazione del movimento animato}.
-In particolare, l'obiettivo è stato quello di \textbf{trasferire un'animazione umanoide preesistente}, proveniente da una sorgente esterna (come Mixamo), al modello personalizzato realizzato in Blender.
-
-Questa operazione, nota come \textbf{retargeting dell'animazione}, consiste nel mappare i movimenti di un rig sorgente su un rig di destinazione avente una struttura scheletrica diversa, ma compatibile a livello gerarchico.
-Nel contesto di questo lavoro, il retargeting ha permesso di riutilizzare animazioni di camminata o corsa tipiche di personaggi umanoidi per animare oggetti non convenzionati, come il \textit{piatto} o la \textit{tazzina con gambe}, generando un effetto dinamico coerente senza dover ricorrere a un'animazione manuale.
-
-Il processo è stato sviluppato interamente in \textbf{Blender}, attraverso \textbf{script Python dedicati}, che automatizzano la fase di assegnazione dei vincoli di trasformazione tra rig sorgente e rig target. Questa automazione ha reso possibile un trasferimento accurato delle animazioni anche in presenza di differenze morfologiche significative tra i modelli, mantenendo la coerenza strutturale e la stabilità del movimento.
-
-\subsection{Trasferimento di animazioni umanoidi agli oggetti}
-
-Per permettere al modello non antropomorfo di riprodurre i movimenti di un rig umanoide (nel caso specifico, un'animazione di camminata proveniente da Mixamo), è stato realizzato un sistema di \textbf{retargeting automatico} all'interno di Blender tramite script Python.
-
-L'obiettivo è mappare le ossa del rig sorgente (umanoide) su quelle di rig target (nel nostro caso il \textit{PiattoRig}), trasferendo posizione e rotazione delle articolazioni principali. Questo processo è stato implementato utilizzando \textbf{vincoli di trasformazione} (constraints) che permettono di copiare in tempo reale i movimenti del rig originale.
-
-In particolare, per ciascun osso del rig del piatto, lo script aggiunge vincoli principali:
-
-\begin{itemize}
-    \item \textbf{Copy Location}, per copiare la posizione locale dell'osso corrispondente;
-    \item \textbf{Copy Rotation}, per copiare la rotazione, mantenendo la coerenza con il sistema di coordinate locale.
-\end{itemize}
-
-\begin{figure}[H]
-\begin{center}
-     \includegraphics[width=10cm]{figure/copy.png}
-     \caption{Vincoli Copy Location su Blender} 
+     \includegraphics[width=13cm]{figure/processo.png}
+     \caption{Frame rappresentativo del risultato di retargeting dell’animazione sull’oggetto target ottenuto con UniRig} 
      \label{fig:cop}
 \end{center}
 \end{figure}
 
-L'approccio consente di sincronizzare i movimenti dell'intero rig, evitando la necessità di keyframe manuali o conversioni di animazioni tra sistemi scheletrici differenti. Un frammento esemplificativo del codice implementato è mostrato di seguito: 
+La figura~\ref{fig:cop} mostra un confronto visivo del retargeting dell'animazione sul modello del piatto con due gambe, in corrispondenza di frame rappresentativi del movimento.
 
-\begin{minted}[fontsize=\small, bgcolor=lightgray, frame=lines]{python}
-    for bone in target.pose.bones:
-    src_bone = source.pose.bones.get(bone.name)
-    if not src_bone:
-        continue
+Nel caso di UniRig, il retargeting risulta coerente con la struttura scheletrica esplicita generata nella fase di rigging. Il movimento delle gambe segue in modo interpretabile l'animazione sorgente, mantenendo una chiara corrispondenza tra ossa sorgente e ossa target. Tuttavia, in alcuni frame sono osservabili limitazioni nella naturalezza del movimento, dovute alla rigidità imposta dalla struttura scheletrica.
 
-    c_loc = bone.constraints.new(type='COPY_LOCATION')
-    c_loc.target = source
-    c_loc.subtarget = bone.name
-    c_loc.owner_space = 'LOCAL'
-    c_loc.target_space = 'LOCAL'
+Per RigAynything, il movimento risulta più fluido e continuo lungo le parti articolate dell'oggetto, con una riduzione delle discontinuità temporali. Tuttavia, l'assenza di una mappatura scheletrica esplicita rende meno immediato il controllo semantico del movimento e la sua modifica manuale.
 
-    c_rot = bone.constraints.new(type='COPY_ROTATION')
-    c_rot.target = source
-    c_rot.subtarget = bone.name
-    c_rot.owner_space = 'LOCAL'
-    c_rot.target_space = 'LOCAL'
-\end{minted}
+\subsection{Analisi qualitativa}
 
-Questo frammento mostra la parte centrale dello script, in cui ad ogni osso viene assegnata una relazione diretta di copia di posizione e rotazione rispetto all'omologo del rig sorgente. Il risultato è un trasferimento fedele del movimento, applicato anche a oggetti con una morfologia completamente diversa da quella del modello originale.
+L'analisi qualitativa dei risultati evidenzia come la fase di retargeting sia fortemente influenzata dalle scelte effettuata nelle fasi di rigging e skinning.
 
-\subsection{Gestione del movimento coerente (root motion o offset spaziali)}
+Tali differenze emergono in modo evidente anche dall'analisi qualitativa delle traiettorie dei punti articolari equivalenti, riportate nei grafici seguenti, in cui è possibile osservare un comportamento più regolare e strutturalmente coerente nel caso di UniRig rispetto a un andamento più fluido ma meno controllabile nel caso di RigAnything.
 
-Per garantire che l'oggetto animato mantenga un movimento coerente nello spazio, è stata introdotta una seconda fase di \textbf{controllo del root motion}, ovvero della traslazione globale del rig.
+\begin{figure}[H]
+\begin{center}
+     \includegraphics[width=13cm]{figure/ginocchio.png}
+     \caption{Rappresentazione qualitativa delle traiettorie del punto articolare intermedio (equivalente al ginocchio) durante il retargeting dell’animazione, proiettate su un piano bidimensionale.}
+     \label{fig:tab}
+\end{center}
+\end{figure}
 
-Il problema principale riscontrato riguarda l'osso radice (\textit{mixamorig:Hips}), che un rig umanoide controlla lo spostamento complessivo del corpo. Nel caso di un oggetto statico come il piatto, la riproduzione diretta di tale movimento avrebbe causato uno spostamento dell'intero modello lungo l'asse verticale.
+\begin{figure}[H]
+\begin{center}
+     \includegraphics[width=13cm]{figure/piede.png}
+     \caption{Rappresentazione qualitativa delle traiettorie del punto terminale della gamba (equivalente al piede) durante il retargeting dell’animazione.}
+     \label{fig:tab}
+\end{center}
+\end{figure}
 
-Per risolvere questo problema, è stato utilizzato un secondo script che gestisce selettivamente il trasferimento delle trasformazioni, limitando il movimento all'asse orizontale (X e Y) e impedendo la traslazione lungo l'asse Z. L'estratto seguente illustra questa logica:
+UniRig, grazie alla presenza di un'armature esplicita, cosente un retargeting più diretto e semanticamente coerente con le animazioni sorgente, risultando particolarmente adatto a pipeline basate su scheletri standard. Questa caratteristica facilita il trasferimento di animazioni provenienti da dataset antropomorfi, come Mixamo, anche su oggetti non convenzionali.
 
-\begin{minted}[fontsize=\small, bgcolor=lightgray, frame=lines]{python}
-    hips = target.pose.bones.get("mixamorig:Hips")
-    if hips:
-        c_loc = hips.constraints.new(type='COPY_LOCATION')
-        c_loc.target = source
-        c_loc.subtarget = "mixamorig:Hips"
-        c_loc.owner_space = 'WORLD'
-        c_loc.target_space = 'WORLD'
-        c_loc.use_z = False  # non copiare l'altezza (Z)
-    
-        c_rot = hips.constraints.new(type='COPY_ROTATION')
-        c_rot.target = source
-        c_rot.subtarget = "mixamorig:Hips"
-\end{minted}
+RigAnything, invece, mostra una maggiore flessibilità nel trasferimento del movimento, adattando l'animazione alla geometria dell'oggetto senza richiedere una corrispondenza scheletrica rigida. Questo approccio produce movimenti visivamente più fluidi, ma rende più complesso il controllo fine del retargeting e la sua riproducibilità su animazioni differenti.
 
-Questa configurazione consente di preservare il \textbf{movimento orizzontale} del rig, mantenendo però fisso il punto di contatto del modello con il suolo. Il risultato è un'animazione fluida e coerente, dove il piatto segue la dinamica della camminata umanoide senza perdere l'allineamento spaziale.
+In sintesi, UniRig risulta più indicato in scenari in cui è richiesta una corrispondenza strutturale tra animazioni sorgente e target, mentre RigAnything privilegia la qualità visiva del movimento adattato, a scapito della controllabilità semantica.
 
-\section{Analisi dei risultati}
-\subsection{Valutazione visiva}
+\subsection{Confronto con altri approcci}
 
-La valutazione qualitativa del modello animato si è concentrata principalmente sulla stabilità strutturale durante il movimento e sulla presenza di eventuali deformazioni anomale nella mesh (piatto e tazzina).
-L'osservazione dei frame chiave ha permesso di verificare:
+Oltre al confronto sperimentale diretto tra UniRig e RigAnything, i risultati ottenuti sono stati messi in relazione con alcuni approcci rappresentativi presenti in letteratura, tra cui ASMR, AnyTop e NOR (Neural Object Rigging).
+Poiché tali metodi non sono stati implementati e testati direttamente nel presente lavoro, il confronto è stato condotto su base metodologica e qualitativa, facendo riferimento alle caratteristiche dichiarate e ai risultati riportati nei rispettivi lavori.
 
-\begin{itemize}
-    \item corretta risposta delle gambe alle rotazioni dei giunti.
-    \item assenza di deformazioni non desiderate nel piatto e nella tazzina
-    \item coerenza del movimento rispetto all'animazione sorgente
-\end{itemize}
+Gli approcci considerati differiscono significativamente per quanto riguarda la rappresentazione del rig, la gestione dello skinning e il supporto al retargeting delle animazioni. In particolare, ASMR si basa su una struttura scheletrica esplicita e su una corrispondenza rigida tra sorgente e target, risultando maggiormente orientato a modelli antropomorfi. AnyTop e NOR, invece, adottano strategie più flessibili, mirate al trattamento di geometrie generiche e non convenzionali, ma presentano un supporto limitato o parziale al retargeting di animazioni complesse.
 
-\subsection{Prestazioni}
+Nel contesto del presente lavoro, UniRig e RigAnything si collocano come approcci intermedi tra i metodi puramente scheletrici e quelli completamente impliciti. UniRig condivide con ASMR l’uso di un’armature esplicita, facilitando il retargeting semantico delle animazioni, ma estende tale paradigma a oggetti non antropomorfi. RigAnything, invece, si avvicina maggiormente ad approcci come AnyTop e NOR, privilegiando l’adattamento del movimento alla geometria dell’oggetto e la qualità visiva del risultato finale, a scapito della controllabilità strutturale. Questo confronto si vede più chiaramente nella seguente figura ~\ref{fig:tab}.
 
-Le prestazioni sono state analizzate considerando:
+\begin{figure}[H]
+\begin{center}
+     \includegraphics[width=13cm]{figure/tabella.png}
+     \caption{Confronto qualitativo tra i diversi approcci, evidenziandone punti di forza e limitazioni nel contesto del retargeting di animazioni su oggetti 3D}
+     \label{fig:tab}
+\end{center}
+\end{figure}
 
-\begin{itemize}
-    \item \textbf{FPS medi} durante la riproduzione dell'animazione
-    \item \textbf{tempi di esecuzione} degli script di generazione dello scheletro e trasferimenti dei pesi.
-    \item impatto delle operazioni di rigging e retargeting sulla scena di Blender
-\end{itemize}
-    
-L'intera procedura si è dimostrata efficiente per modelli complessità ridotta come quelli considerati, garantendo un'interazione fluida e un processo automatizzato rapido.
+\section{Definizione della metrica di errore}
 
-\subsection{Limite tecnici e problematiche}
+\subsection{Motivazioni e obbiettivi}
 
-Nonostante i risultati complessivamente soddisfacenti, sono emerse alcune limitazioni:
+La valutazione dei risultati ottenuti mediante tecniche di rigging automatico, skinning e retargeting di animazioni su oggetti 3D inanimati risulta particolarmente complessa, in quanto non esiste un riferimento univoco che definisca una soluzione ottimale. La qualità del risultato dipende infatti da molteplici fattori, tra cui la coerenza strutturale del rig, la stabilità delle deformazioni e la fedeltà del movimento trasferito.
+Alla luce di tali considerazioni, è stata definita una metrica di errore composita, con l’obiettivo di quantificare in modo coerente il grado di discostamento del risultato ottenuto rispetto a una soluzione ritenuta ottimale nel contesto applicativo considerato. La metrica proposta consente di confrontare approcci basati su paradigmi differenti, pur mantenendo una valutazione uniforme.
 
-\begin{itemize}
-    \item lo scheletro generato replica solo in parte la struttura umana e non segue completamente le logiche generative dei modelli autoregressivi come UniRig;
-    \item il trasferimento dei pesi basato su copia diretta da un modello umanoide può generare zone con pesi approssimativi;
-    \item il retargeting richiede un allineamento iniziale accurato delle ossa e può produrre movimenti innaturali in assenza di vincoli aggiuntivi;
-    \item il modello non implementa uno skinning automatico predittivo, come mostrato nella letteratura recente, ma una variante semplificata basata sul trasferimento pesi.
-\end{itemize}
+\subsection{Definizione della metrica}
 
+La metrica di errore proposta, denominata \textbf{Composite Retargeting Error} (CRE), è definita come una combinazione pesata di quattro componenti principali:
 
+\begin{align*}
+    CRE = {w_s}E_s + {w_d}E_d + {w_t}E_t + {w_c}E_c
+\end{align*}
 
+dove ${E_s, E_d, E_t}$ ed ${E_c}$ rappresentano rispettivamente l’errore strutturale, l’errore di deformazione, l’errore temporale e l’errore di controllabilità, mentre ${w_s, w_d, w_t}$ e ${w_c}$ sono i pesi associati a ciascuna componente, tali che:
 
+\begin{align*}
+    w_s + w_d + w_t + w_c = 1
+\end{align*}
 
+Ciascuna componente è normalizzata nell’intervallo [0,1], dove il valore 0 indica una soluzione ottimale rispetto al criterio considerato, mentre il valore 1 rappresenta una forte deviazione dalla soluzione desiderata.
 
-    
+\subsection{Componenti della metrica}
 
+\textbf{Errore strutturale(${E_s}$)}
+
+L’errore strutturale misura il grado di coerenza del rig generato rispetto a una struttura scheletrica semanticamente interpretabile. In particolare, vengono valutati la presenza di uno scheletro esplicito, la coerenza tra ossa e parti dell’oggetto e la stabilità della gerarchia del rig.
+Valori ridotti di ${E_s}$ indicano una struttura facilmente interpretabile e controllabile, mentre valori elevati sono associati a rig impliciti o difficilmente modificabili.
+
+\textbf{Errore di deformazione(${E_d}$)}
+
+L’errore di deformazione quantifica la qualità delle deformazioni della mesh durante l’animazione, tenendo conto di fenomeni quali stretching eccessivo, collassi locali e intersezioni geometriche. La valutazione è stata condotta mediante analisi visiva dei risultati e, ove disponibile, mediante l’osservazione delle mappe di peso associate allo skinning.
+
+\textbf{Errore temporale(${E_t}$)}
+
+L’errore temporale misura la coerenza del movimento nel tempo, considerando la presenza di discontinuità, jitter o perdita di fluidità nel passaggio tra pose successive. La valutazione è stata effettuata su frame rappresentativi dell’animazione, selezionati in corrispondenza di pose significative.
+
+\textbf{Errore di controllabilità(${E_c}$)}
+
+L’errore di controllabilità valuta il grado di accessibilità e modificabilità del risultato ottenuto. In particolare, vengono considerate la possibilità di intervenire manualmente sul rig, la chiarezza del controllo offerto all’utente e la riutilizzabilità dell’animazione su modelli differenti.
+
+\subsection{Applicazione della metrica ai metodi sperimentati}
+
+La metrica di errore è stata applicata ai metodi UniRig e RigAnything, per i quali sono stati ottenuti risultati sperimentali nello stesso contesto applicativo. I valori riportati sono il risultato di una valutazione qualitativa normalizzata, basata sull’analisi visiva dei risultati e sui criteri definiti in precedenza.
+
+\begin{table}[h]
+\centering
+\caption{Confronto dei valori della metrica di errore per i metodi sperimentati}
+\label{tab:cre_methods}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccccc}
+\hline
+\textbf{Metodo} & $\mathbf{E_s}$ & $\mathbf{E_d}$ & $\mathbf{E_t}$ & $\mathbf{E_c}$ & \textbf{CRE} \\
+\hline
+UniRig      & 0.2 & 0.4 & 0.3 & 0.2 & 0.28 \\
+RigAnything & 0.6 & 0.2 & 0.2 & 0.6 & 0.40 \\
+\hline
+\end{tabular*}
+\end{table}
+
+\subsection{Discussione}
+
+L’analisi condotta mediante la metrica proposta evidenzia come gli approcci basati su uno scheletro esplicito tendano a favorire la controllabilità e la coerenza strutturale, mentre i metodi a controllo implicito mostrano generalmente migliori prestazioni in termini di deformazione e adattabilità geometrica. Tali risultati confermano l’assenza di una soluzione globalmente ottimale e sottolineano la presenza di compromessi tra i diversi criteri considerati.

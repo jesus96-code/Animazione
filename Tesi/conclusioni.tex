@@ -1,0 +1,15 @@
+Questo lavoro di tesi ha affrontato il problema del rigging, skinning e retargeting automatico di animazioni su oggetti 3D inanimati, con particolare attenzione all'adattamento di animazioni antropomorfe a geometrie non convenzionali. L'obiettivo principale è stato quello di analizzare e confrontare diversi approcci automatici, valutandone l'efficacia all'interno di una pipeline basata su Blender.
+
+I risultati ottenuti mostrano come le scelte effettuata nelle fasi di rigging e skinning influenzino in modo significativo la qualità e la controllabilità del retargeting delle animazioni. In particolare, l'approccio basato su UniRig si è dimostrato efficace nel mantenere una corrispondenza strutturale e semantica con le animazioni sorgente, facilitando il riutilizzo di dataset standard come Mixamo anche su oggetti non antropomorfi.
+
+Al contrario, approcci più flessibili come RigAnything tendono a privilegiare la qualità visiva del movimento adattato alla geometria dell'oggetto, a scapito di una maggiore difficoltà nel controllo fine del retargeting e nella riproducibilità dei risultati su animazioni differenti.
+
+Il presente lavoro presenta alcuni limiti. In primo luogo, la valutazione dei risultati è stata prevalentamente qualitativa, concentrandosi sull'analisi visiva e sulla coerenza del movimento, senza introdurre metriche quantitative standardizzate. Inoltre, i test sono stati condotti su un numero limitato di modelli e animazioni, scelti come casi di studio rappresentativi ma non esautivi.
+
+Un ulteriore limite riguarda l'integrazione parziale di alcuni approcci automatici, che non ha consentito una valutazione uniforme di tutte le fasi della pipeline per ciascun metodo considerato.
+
+Possibili sviluppi futuri di questo lavoro includono l'introduzione di metriche quantitative per la valutazione del retargeting, come l'analisi delle traiettorie dei punti articolari o la misurazione della deviazione rispetto a movimenti di riferimento. Tali metriche permetterebbero di affiancare all'analisi qualitativa una vautazione più oggettiva dei risultati.
+
+Un ulteriore sviluppo potrebbe consistere nell'estensione dei test a un numero maggiori di modelli 3D e categorie di oggetti, al fine di valutare la robustezza degli approcci considerati in scenari più eterogenei
+
+Infine, l'integrazione di tecniche di apprendimento automatico per l'ottimizzazione automatica del rigging e del retargeting potrebbe rappresentare una direzione promettente per migliorare ulteriormente l'adattamento delle animazioni a geometrie non convenzionali.

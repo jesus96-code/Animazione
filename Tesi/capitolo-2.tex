@@ -1,6 +1,6 @@
 Il presente capitolo ha lo scopo di presentare gli strumenti software utilizzati nel corso dello svolgimento del progetto di tesi. Non è obiettivo del capitolo fornire una descrizione esaustiva, la quale è facilmente reperibile da altre fonti, ma darne una'introduzione concisa nell'ottica più ampia del progetto realizzato, specificando allo stesso tempo i motivi che hanno portato a scegliere un determinato strumento software piuttosto che un altro. 
 \section{Blender}
-Blender è una suite libera e open-source per la creazione di contenuti 3D. Il software supporta l'intero processo produttivo della grafica tridimensionale: modellazione, rigging, animazione, simulazione, rendering, composizione. motion tracking e anche montaggio video.
+Blender è una suite libera e open-source per la creazione di contenuti 3D. Il software supporta l'intero processo produttivo della grafica tridimensionale: modellazione, rigging, animazione, simulazione, rendering, composizione, motion tracking e anche montaggio video.
 Blender garantisce un'esperienza coerente su sistemi operativi Linux, macOS e Windows grazie all'utilizzo di OpenGL per l'interfaccia grafica.
 
 Si tratta di uno strumento estremamente versatile, utilizzato in ambiti differenti quali la produzione di animazioni, la creazione di asset per videogiochi, motion graphics, serie televisive, concept art, storyboard, spot pubblicitari e lungometraggi. È impiegato sia da professionisti sia da appassionati e studi di produzione.
@@ -10,8 +10,8 @@ Si tratta di uno strumento estremamente versatile, utilizzato in ambiti differen
 \begin{itemize}
     \item Blender è una piattaforma completa per la creazione di contenuti 3D, dotata di tutti gli strumenti fondamentali: modellazione, rendering, animazione e rigging, video editing, effetti visivi, composition, texture e vari tipi di simulazioni fisiche.
     \item È multipiattaforma, con un'interfaccia grafica basata su OpenGL uniforme su tutti i principali sistemi operativi e può essere personalizzato tramite script Python.
-    \item L'architettura interna è progettata per supportare un workflow di produzione rapido ed efficente.
-    \item Dispone di una comunità molto attiva e distribuita a livello internazionale, con documentazioni, tutoriali e risorse disponibili (consultabili, ad esempio, su blender.org/comunity).
+    \item L'architettura interna è progettata per supportare un workflow di produzione rapido ed efficiente.
+    \item Dispone di una comunità molto attiva e distribuita a livello internazionale, con documentazioni, tutorial e risorse disponibili (consultabili, ad esempio, su blender.org/comunity).
     \item Può essere installato ed eseguito da qualsiasi directory senza modificare la configurazione del sistema.
 \end{itemize}
 
@@ -38,7 +38,7 @@ Si tratta di uno strumento estremamente versatile, utilizzato in ambiti differen
         \item Rigging
 
         Il rigging è il processo di creazione di uno scheletro digitale (armatura) che definisce le articolazioni e i punti di movimento dell'oggetto o personaggio.
-        L'armatura è costituita da ossa (bones) collegate da relazioni gerarchiche: quando un'osso si muove, i suoi discendenti ereditano la trasformazione.
+        L'armatura è costituita da ossa (bones) collegate da relazioni gerarchiche: quando un osso si muove, i suoi discendenti ereditano la trasformazione.
         Successivamente si definisce tra scheletro e mesh, tramite lo skinning:
         \begin{itemize}
             \item Ogni vertice della mesh viene associato a una o più ossa.
@@ -67,8 +67,8 @@ L'API bpy permette di:
     \item creare operatori personalizzati, pannelli e addon integrabili nell'interfaccia di Blender;
     \item automatizzare pipeline complesse come import/export, rigging, baking o generazione di animazioni.
 \end{itemize}
-Ad esempio, una mesh può essere letta e modificata tramite codice, i vertex group possono essere manipolati, opppure è possibile controllare direttamente i keyframe di un'animazione. Blender salva inoltre tutte le azioni dell'utente in forma di comandi Python visualizzabili dalla Python Console o dall'Info Log, facilitando l'apprendimento della corrispondenza tra operazioni manuali e comandi programmabili.
-L'impiego della scripting API è particolarmente utile quando si lavora con retargeting dell'animazione o generazione procedurale, come nel caso dell'auto-rigging o del trasferimento automatico dei pesi (skinning), poichè consente di operare in modo coerente su più modelli in modo ripetibile e senza intervento manuale.
+Ad esempio, una mesh può essere letta e modificata tramite codice, i vertex group possono essere manipolati, oppure è possibile controllare direttamente i keyframe di un'animazione. Blender salva inoltre tutte le azioni dell'utente in forma di comandi Python visualizzabili dalla Python Console o dall'Info Log, facilitando l'apprendimento della corrispondenza tra operazioni manuali e comandi programmabili.
+L'impiego della scripting API è particolarmente utile quando si lavora con retargeting dell'animazione o generazione procedurale, come nel caso dell'auto-rigging o del trasferimento automatico dei pesi (skinning), poiché consente di operare in modo coerente su più modelli in modo ripetibile e senza intervento manuale.
 
 
 \section{Mixamo}
@@ -98,7 +98,7 @@ Mixamo consente l'esportazione di modelli riggati e animazioni principalmente ne
          \label{fig:fbx}
         \end{center}
     \end{figure}
-Queste caratteristica rende l'FBX particolarmente adatto all'interscambio tra software differenti, cosentendo un flusso di lavoro fluido tra Mixamo -> Blender -> Unity.
+Queste caratteristica rende l'FBX particolarmente adatto all'interscambio tra software differenti, consentendo un flusso di lavoro fluido tra Mixamo $\rightarrow$ Blender $\rightarrow$ Unity.
 
 \medskip
 \noindent\textbf{Compatibilità con Blender}\medskip
@@ -123,7 +123,7 @@ Blender fornisce strumenti per la gestione dell'animazione, tra cui NLA Editor e
 Nel motore di gioco Unity, i file FBX importati da Mixamo vengono riconosciuti come Humanoid Rig tramite il sistema di retargeting dell'engine. Questo consente:
 \begin{itemize}
     \item l'associazione dei movimenti a personaggi differenti purchè abbiamo un rig umanoide compatibile,
-    \item l'utilizzo delle animazione all'interno dello Animator Controller,
+    \item l'utilizzo delle animazioni all'interno dello Animator Controller,
     \item la sincronizzazione delle sequenze tramite lo state machine di Unity
 \end{itemize}
 Inoltre, Unity consente di:
@@ -136,7 +136,7 @@ Questo rende l'integrazione delle animazioni Mixamo particolarmente efficace nel
 
 
 \section{MoveAI}
-MoveAI è un'innovatica piattaforma di motion capture basata sull'intelligenza artificiale che converte video ordinari in animazioni 3D di alta qualità, senza bisogno di marcatori, tute o costose configurazioni. Progettata per creatori di ogni livello, MoveAI utilizza la visione artificiale e l'apprendimento automatico per analizzare il movimento umano, fornendo dati di animazione accurati e realistici direttamente da riprese con una o più telecamere. Grazie a strumenti intuitivi come MoveOne a a prezzi flessibili basati sui crediti, MoveAI consenti a singoli artisti, studi e aziende di creare motion capture di livello professionale a una frazione dei costi tradizionali.
+MoveAI è un'innovativa piattaforma di motion capture basata sull'intelligenza artificiale che converte video ordinari in animazioni 3D di alta qualità, senza bisogno di marcatori, tute o costose configurazioni. Progettata per creatori di ogni livello, MoveAI utilizza la visione artificiale e l'apprendimento automatico per analizzare il movimento umano, fornendo dati di animazione accurati e realistici direttamente da riprese con una o più telecamere. Grazie a strumenti intuitivi come MoveOne a prezzi flessibili basati sui crediti, MoveAI consenti a singoli artisti, studi e aziende di creare motion capture di livello professionale a una frazione dei costi tradizionali.
 
 
 \begin{figure}[H]
@@ -156,11 +156,11 @@ MoveAI si basa su una pipeline di elaborazione che integra:
     \item filtraggio temporale per garantire coerenza a fluidità del movimento;
     \item retargeting automatico del movimento su un modello umanoide virtuale.
 \end{itemize}
-Il risultato è un'animazione naturalistica e continua, che rispetta ritmo, velocità, dinamica e stile di movimento originale. A differenza dei sistemi tradizionali di motion capture, che richiedono ambienti controllati e strumentazione costosa, MoveAI consente di registrare l'azione in contesti quotidiani, riducento drasticamente i costi di produzione e rendendo più accessibile la creazione di animazioni realistiche.
+Il risultato è un'animazione naturalistica e continua, che rispetta ritmo, velocità, dinamica e stile di movimento originale. A differenza dei sistemi tradizionali di motion capture, che richiedono ambienti controllati e strumentazione costosa, MoveAI consente di registrare l'azione in contesti quotidiani, riducendo drasticamente i costi di produzione e rendendo più accessibile la creazione di animazioni realistiche.
 Sul piano applicativo, questa tecnologia si rivela particolarmente utile in:
 \begin{itemize}
     \item animazione 3D e produzione cinematografica,
-    \item sviluppo di videogiochi e esperienze immersive,
+    \item sviluppo di videogiochi ed esperienze immersive,
     \item sport e analisi del movimento,
     \item realtà virtuale e aumentata.
 \end{itemize}
@@ -181,17 +181,17 @@ Unity offre un sistema integrato per la gestione di modelli 3D animati, basato s
 
 \begin{figure}[H] 
     \begin{center} 
-        \includegraphics[width=10cm]{figure/confi.png} 
+        \includegraphics[width=10cm]{figure/imp.png} 
         \caption{Impostazione animazione su Unity} 
         \label{fig:confi}
     \end{center} 
 \end{figure}
 
-\subsection{Pipeline di importazione FBX -> Unity}
+\subsection{Pipeline di importazione FBX $\rightarrow$ Unity}
 Il formato FBX rappresenta lo standard più comune per trasferire modelli animati da software di authoring 3D (come Blender o  Maya) verso Unity. Durante l'importazione, Unity applica automaticamente una serie di conversioni, tra cui la normalizzazione delle scale, l'interpretazione dello scheletro e la suddivisione di eventuali clip di animazione contenute nel file.
-Una volta importato, il modello può essere configurato tramite l'Inspector: è possibile definire il tipo di rig, controllare a coerenza della gerarchia scheletrica e, se necessario, correggere le pose di riferimento (T-Pose/ A-Pose). L'animazione può quindi essere associata al personaggio attraverso componenti Animator o Animation.
+Una volta importato, il modello può essere configurato tramite l'Inspector: è possibile definire il tipo di rig, controllare a coerenza della gerarchia scheletrica e, se necessario, correggere le pose di riferimento (T-Pose/A-Pose). L'animazione può quindi essere associata al personaggio attraverso componenti Animator o Animation.
 
-\subsection{Sitema di retargeting delle animazioni: Animator Controller}
+\subsection{Sistema di retargeting delle animazioni: Animator Controller}
 Il cuore del sistema di animazione in Unity è l'Animator Controller, uno strumento che consente di definire come e quando un personaggio esegue determinate animazioni. L'Animator Controller funziona tramite una struttura a \textbf{state machine}, dove ogni stato rappresenta una clip di animazione o una combinazione di esse. Le transizioni tra gli stati possono essere controllate da parametri, variabili che vengono aggiornate in tempo reale dal codice o dall'interazione dell'utente.
 
-Quando si utilizza un rig di tipo Humanoid, Unity applica automaticamente il motion retargeting , ovvero la conversione dei movimenti da una sorgente (ad esempio un'animazione proveniente da Mixamo o MoveAI) al modello in scena. Questo processo presenza l'intenzione del movimento, adattandolo alle proporzioni del personaggio, permettendo così di riutilizzare la stessa animazione su avatar differenti senza ulteriori modifiche.
+Quando si utilizza un rig di tipo Humanoid, Unity applica automaticamente il motion retargeting, ovvero la conversione dei movimenti da una sorgente (ad esempio un'animazione proveniente da Mixamo o MoveAI) al modello in scena. Questo processo presenza l'intenzione del movimento, adattandolo alle proporzioni del personaggio, permettendo così di riutilizzare la stessa animazione su avatar differenti senza ulteriori modifiche.

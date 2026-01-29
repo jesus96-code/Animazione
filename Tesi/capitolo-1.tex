@@ -12,7 +12,7 @@ Una mesh è un struttura di dati geometrici che segue la rappresentazioni di sud
 \end{figure}
 
 \subsection{Vertici, lati, facce e struttura topologica}
-Una mesh superficiale poligonale ha tre differenti elementi combinati: vertici, bordi e lati. La figura mostra gli elementi~\ref{fig:mesh}. Matematicamente ~\cite{mathmesh}, una mesh superficiale poligonale \(\mathcal{M}\) che contiene \(\mathcal{V}\) vertici e \(\mathcal{F}\) faccie è formato da:
+Una mesh superficiale poligonale ha tre differenti elementi combinati: vertici, bordi e lati. La figura mostra gli elementi~\ref{fig:mesh}. Matematicamente ~\cite{mathmesh}, una mesh superficiale poligonale \(\mathcal{M}\) che contiene \(\mathcal{V}\) vertici e \(\mathcal{F}\) facce è formato da:
 
 \begin{align*}
 \mathcal{M} = \{ (V, F) \mid 
@@ -22,22 +22,22 @@ f_i \in V^d
 \}
 \end{align*}
 
-dove \(\mathcal{V}\) è l'insieme dei vertici , \(\mathcal{F}\) è l'insieme delle facce e d denota il numero di vertici di ogni faccia. Allo stesso modo, un volume di una mesh \(\mathcal{M}\) è formato da:
+dove \(\mathcal{V}\) è l'insieme dei vertici, \(\mathcal{F}\) è l'insieme delle facce e d denota il numero di vertici di ogni faccia. Allo stesso modo, un volume di una mesh \(\mathcal{M}\) è formato da:
 
 \begin{align*}
     \mathcal{M} = \{ (V,F,T) \mid
     T = \{ t_i \}_{i=1,2,\dots,t_i}, t_i \in F^k \}
 \end{align*}
 
-dove k rappresenta il numero di facce per ogni voxel t_i.
+dove k rappresenta il numero di facce per ogni voxel $t_i$.
 
 \subsection{Coordinate locali e globali, trasformazioni con matrici 4x4}
 Tutti gli oggetti visualizzati in grafica 3D, si basano sulle posizioni dei loro vertici all'interno dello spazio tridimensionale. Queste coordinate però sono soggette a numerosi cambiamenti durante le animazioni.
 Come visto, le coordinate rappresentano le posizioni dei vertici di una figura nello spazio 3D. Per visualizzare una scena, un programma di grafica deve conoscere le coordinate di tutti i vertici degli oggetti che devono essere visualizzati. Se l'oggetto viene spostato o ruotato, queste coordinate cambiano di conseguenza anche se la forma dell'oggetto rimane sempre la stessa.
 
-Probabilmente la rappresentazione matriciali è più ottimale in termini di flessibilità, in quanto ti permette di rappresentare anche traslazione, scalature e altre trasformazioni. È, infatti, la rappresentazione che Blender utilizza internamente  proprio perché offre la maggior flessibilità. Siccome permette di rappresentare qualsiasi tipo di trasformazione, questa struttura viene solitamente chiamata \textit{Matrice di Trasformazione}. Nel caso caso di uno spazio a 3 dimensioni, essa a dimensione 4x4.~\cite{tec:2018}
+Probabilmente la rappresentazione matriciali è più ottimale in termini di flessibilità, in quanto ti permette di rappresentare anche traslazione, scalature e altre trasformazioni. È, infatti, la rappresentazione che Blender utilizza internamente  proprio perché offre la maggior flessibilità. Siccome permette di rappresentare qualsiasi tipo di trasformazione, questa struttura viene solitamente chiamata \textit{Matrice di Trasformazione}. Nel caso di uno spazio a 3 dimensioni, essa a dimensione 4x4.~\cite{tec:2018}
 
-Questa sua caratteristica la rende indispensable per rappresentare articolazoni formate da più ossa, che verrano illustrate di seguito ~\ref{fig:coord}, poichè rende possibile convertire le coordinate locali di un osso figlio a quelle locali del suo padre, fino ad arrivare alle coordinate globali.
+Questa sua caratteristica la rende indispensabile per rappresentare articolazioni formate da più ossa, che verranno illustrate di seguito ~\ref{fig:coord}, poiché rende possibile convertire le coordinate locali di un osso figlio a quelle locali del suo padre, fino ad arrivare alle coordinate globali.
 %Per risolvere questo problema esistono due tipi di coordinate: Locali e Globali.
 %Tutti gli oggetti sono descritti da un loro sistema di coordinate (coordinate locali) , quando vengono visualizzatti sulla scena, le loro coordinate vengono "trasformate" da locali a globali. Questa trasformazione, si può con un calcolo matematico concettualmente semplice (prodotto matrice - vettore).
 
@@ -53,7 +53,7 @@ diverse ossa, in tre posizioni differenti}
 
 
 \subsection{Differenze tra mesh statica e mesh animata}
-Una mesh statica è una struttura i cui vertici rimangono fissi nel tempo: rappresenta un oggetto immbile o privo di deformazioni, come un modello architettonico o un oggetto di scena.
+Una mesh statica è una struttura i cui vertici rimangono fissi nel tempo: rappresenta un oggetto immobile o privo di deformazioni, come un modello architettonico o un oggetto di scena.
 Al contrario, una mesh animata varia la posizione dei suoi vertici nel tempo, secondo una serie di trasformazioni che possono derivare da:
 \begin{enumerate}
     \item Animazione di oggetto (movimento rigido della mesh nel mondo)
@@ -64,18 +64,11 @@ In pratica, una mesh animata non è solo una rappresentazione geometrica, ma un 
 
 \section{Trasformazioni geometriche}
 Nel contesto dell'animazione 3D, ogni elemento visivo - sia esso un personaggio o un oggetto - prende vita attraverso una combinazione di trasformazioni geometriche fondamentali: traslazione, rotazione e scalatura. Tali operazioni sono essenziali per finire le posizione, l'orientamento e la dimensione della mesh nello spazio tridimensionale, e vengono efficacemente rappresentate grazie all'uso di matrici 4x4 in coordinate omogenee. Queste matrici permettono la composizione sequenziale di più trasformazioni, garantendo un controllo elegante e coerente della deformazione e del movimento dei modelli.
-Parallelamente, l'uso di quaternioni offre un'alternativa potente e matematicamente robusta per la reppresentazione delle rotazioni 3D: evitando problemi come il gimbal-lock, consentendo interpolazioni fluide e una gestione stabile dell'orientamento negli scheletri animati, i quaternioni si affermano come strumento preferito nei motori grafici e nei sistemi di animazione professionali.
+Parallelamente, l'uso di quaternioni offre un'alternativa potente e matematicamente robusta per la rappresentazione delle rotazioni 3D: evitando problemi come il gimbal-lock, consentendo interpolazioni fluide e una gestione stabile dell'orientamento negli scheletri animati, i quaternioni si affermano come strumento preferito nei motori grafici e nei sistemi di animazione professionali.
 
 Dal punto di vista matematico, tali trasformazioni vengono rappresentate mediante matrici 4x4, che consentono di gestire in modo unificato le operazioni dello spazio omogeneo. La composizione di più trasformazioni viene ottenuta attraverso la moltiplicazione delle rispettive matrici, seguendo in ordine preciso che influisce direttamente sul risultato finale.
 
 Nell'ambito dell'animazione, queste trasformazioni vengono applicate in modo dinamico per determinare la posizione e la deformazione degli oggetti nel tempo. Ad esempio, durante un movimento di un personaggio, le trasformazioni delle singole ossa del rig vengono propagate alla mesh collegata, consentendo la corretta animazione della superficie. In questo senso, le trasformazioni rappresentano il collegamento diretto tra la rappresentazione matematica e il comportamento visivo del modello tridimensionale.
-
-%\begin{figure}[h]
-%\begin{center}
- %    \includegraphics[width=8cm]{figure/asse.png}
-  %   \caption{}
-%\end{center}
-%\end{figure}
 
 \subsection{Traslazione, rotazione e scala 3D: rappresentazione matriciale e composizione}
 Nel contesto della grafica e dell'animazione tridimensionale, ogni oggetto nello spazio virtuale è definito da un serie di coordinate che ne descrivono la posizione, l'orientamento e le dimensioni. 
@@ -116,7 +109,7 @@ Infatti:\begin{align*}
 
     \item \textbf{Rotazione 3D}
     
-La rotazione definisce l'orientamento nello spazio, in questo caso è necessario definire tre rotazioni base, una attorno a ciuscuno dei tre assi x, y e z.
+La rotazione definisce l'orientamento nello spazio, in questo caso è necessario definire tre rotazioni base, una attorno a ciascuno dei tre assi x, y e z.
 
 \begin{figure}[h]
 \centering
@@ -220,10 +213,10 @@ Infatti:\begin{align*}
 \end{itemize}
 
 \subsection{Rotazione con quaternioni: motivazione e vantaggi rispetto agli Euler angles (no gimbal lock)}
-Nel contesto della grafica tridimensionale, le trasformazioni geometriche costituiscono la base matematica attraverso cui è possibile descrivere la posizione e l'orientamento di un oggetto nello spazio. Storicamente, tali trasformazioni sono state rappresentate mediante matrici di trasformazione, che agiscono come uno stato di riferimento o "base": moltiplicando un vettore o una matrice per la matrice di trasformazione corrispondente, è possibile ottenere la nuova posizione o orientazione dell'oggetto nello spazio tridimensionale.
+Nel contesto della grafica tridimensionale, le trasformazioni geometriche costituiscono la base matematica attraverso cui è possibile descrivere la posizione e l'orientamento di un oggetto nello spazio. Storicamente, tali trasformazioni sono state rappresentate mediante matrici di trasformazione, che agiscono come uno stato di riferimento o "base": moltiplicando un vettore o una matrice per la matrice di trasformazione corrispondente, è possibile ottenere la nuova posizione od orientazione dell'oggetto nello spazio tridimensionale.
 Per la rappresentazione delle rotazioni, un approccio tradizionale è quello basato sugli angoli di Eulero, i quali definiscono l'orientamento di un corpo attraverso una sequenza ordinata di rotazioni elementari attorno agli assi principali del sistema di riferimento (X, Y, Z). Sebbene intuitivi e storicamente molto diffusi, gli angoli di Eulero presentano alcune limitazioni, tra cui in particolare la possibilità di incontrare configurazioni critiche che riducano la stabilità della rotazione.
 
-Per superare tali problematiche, si è progressivamente affermato l'impiego dei \textbf{quaternioni}, una formulazione matematica più robusta ed efficiente per la gestione delle rotazioni tridimensionali. I quaternioni consentono di rappresentare in modo compatto un orientamento nello spazio e di calcolare rotazioni continue e interpolazioni fluide tra pose differenti, evitando le ambiguità e le discontinuità tipiche degli angoli di Eulero. La loro struttura, derivata dai numeri complessi, permette inoltre una maggiore stabilità numerica e una gestione più coerente delle rotazioni cumulative, rendendoli uno strumento esenziale nelle moderne pipeline di animazione e rigging.
+Per superare tali problematiche, si è progressivamente affermato l'impiego dei \textbf{quaternioni}, una formulazione matematica più robusta ed efficiente per la gestione delle rotazioni tridimensionali. I quaternioni consentono di rappresentare in modo compatto un orientamento nello spazio e di calcolare rotazioni continue e interpolazioni fluide tra pose differenti, evitando le ambiguità e le discontinuità tipiche degli angoli di Eulero. La loro struttura, derivata dai numeri complessi, permette inoltre una maggiore stabilità numerica e una gestione più coerente delle rotazioni cumulative, rendendoli uno strumento essenziale nelle moderne pipeline di animazione e rigging.
 
 \begin{itemize}
     \item \textbf {Angoli di Eulero}
@@ -234,7 +227,7 @@ Per superare tali problematiche, si è progressivamente affermato l'impiego dei 
 
     Tuttavia, tale rappresentazione soffre di limitazioni strutturali. In particolare, può verificarsi il fenomeno noto come gimbal lock, una condizione in cui due assi di rotazione diventano allineati, riducendo effettivamente i gradi di libertà del sistema. Questa degenerazione comporta instabilità numerica e ambiguità nell'orientamento, sopratutto quando si interagisce con pose molto articolate. Inoltre, l'ordine delle rotazioni (ad esempio, XYZ rispetto a ZYX) influenza direttamente il risultato finale, introducendo ulteriore ambiguità. ~\cite{quater}.
 
-    Per queste ragioni, nonostante la loro accessibilità concettuale, gli angoli di Eulero sono oggi spesso sostituiti dai quaternioni, i quali garantiscono una rappresentazione continua, priva di singularità e dunque più adatta ai contesti di animazione e rigging avanzato.
+    Per queste ragioni, nonostante la loro accessibilità concettuale, gli angoli di Eulero sono oggi spesso sostituiti dai quaternioni, i quali garantiscono una rappresentazione continua, priva di singolarità e dunque più adatta ai contesti di animazione e rigging avanzato.
 
     \item \textbf{Rotazione con Quaternioni}
     
@@ -246,7 +239,7 @@ Per superare tali problematiche, si è progressivamente affermato l'impiego dei 
     \begin{figure}[H]
         \begin{center}
          \includegraphics[width=10cm]{figure/asse2.png}
-         \caption{Il quaternione q ruota il vettore v tramite un angolo ${\theta}$}
+         \caption{Il quaternione $\textit{q}$$ ruota il vettore $\textit{v} tramite un angolo ${\theta}$}
          \label{fig:asse2}
         \end{center}
     \end{figure}
@@ -345,7 +338,7 @@ dove:
 \subsection{Linear Blend Skinning (LBS): formulazione matematica e limiti}
 
 Il \textit{Linear Blend Skinning}(LBS) è ampiamente utilizzato nei videogiochi e in moltre applicazione real-time per deformare la superficie di un personaggio in base al movimento di un sottostante scheletro astratto.
-Consideriamo un modelli deformabile rappresentato da una mesh, i cui vertici in coordinate omogenee sono indicate come $\vec{V} = \vec{v_n} \in \mathbb{R}^{4}$.
+Consideriamo un modelli deformabile rappresentato da una mesh, i cui vertici in coordinate omogenee sono indicate come $\vec{V}$ = $\vec{v_n}$ $\in$ $\mathbb{R}^{4}$.
 
 Il processo di deformazione secondo LBS puo essere definito come: 
 
@@ -385,8 +378,7 @@ Infine, rappresentando i pesi $w_n = \{w_n\}^*$ e le trasformazioni \(B(\theta) 
 dove \(B(\theta)\) ha dimensioni B x 4 x 4, e \(w_n\) ha dimensioni 1 x B.
 Notiamo anche che i pesi \(w_n\) sono normalmente normalizzati affinchè siano \textbf{positivi} e \textbf{sommino a uno}, condizioni necessaria per ottenere una deformazione stabile e priva di artefatti.~\cite{lbs}
 
-\paragraph{Limite dell'LBS}
-Nonostante la sua semplicità ed efficienza, l'LBS presenta alcune limitazioni note:
+\textbf{Limite dell'LBS}. Nonostante la sua semplicità ed efficienza, l'LBS presenta alcune limitazioni note:
 \begin{enumerate}
     \item Collasso del volume (Candy Wrapper Problem)
     
@@ -454,25 +446,25 @@ Questo procede richiede:
 Storicamente, il retargeting veniva eseguito manualmente tramite Inverse Kinematics e regolazioni osso per osso.
 Oggi, esistono metodi automatici che combinano:
 \begin{itemize}
-    \item analisis strutturate dello scheletro,
+    \item analisi strutturate dello scheletro,
     \item ottimizzazione sui pesi dello scheletro,
     \item apprendimento automatico.
 \end{itemize}
 
-Tra gli approcci moderni spiccano UniRig e ASMR, che permettono di trasferire animazioni anche su modelli non umanoidi, generalizzando la pipeline oltre il classino personaggio bipede.
+Tra gli approcci moderni spiccano UniRig e ASMR, che permettono di trasferire animazioni anche su modelli non umanoidi, generalizzando la pipeline oltre il cclassicopersonaggio bipede.
 
 \subsection{Concetto di motion retargeting tra modelli diversi}
 Il motion retargeting è il processo attraverso il quale un'animazione originariamente associata a un determinato modello o scheletro viene trasferita a un personaggio con proporzioni o struttura differente. La difficoltà principale consiste nel preservare la coerenza del movimento, evitando deformazioni innaturali e garantendo la stabilità del risultato.
 Con l'evoluzione del machine learning, sono stati studiati approcci che sfruttano reti neurali per apprendere direttamente la mappatura tra scheletri differenti, riducendo la necessità di progettare manualmente vincoli cinematici o modelli di ottimizzazione. Alcuni di questi metodi integrano Forward Kinematics in architetture ricorrenti e introducono vincoli di ciclo per preservare la coerenza del movimento durante la trasformazione.
-In sintesi, il motion retargeting si è evoluto da metodi basati su ottimizzazione e IK a soluzioni neurali che apprendono direttamente lo spazio delle pose, con l'obiettivo di gestire scheletri eterogenei e movimenti complessi in modo più robusto ed automatizzato.
+In sintesi, il motion retargeting si è evoluto da metodi basati su ottimizzazione e IK a soluzioni neurali che apprendono direttamente lo spazio delle pose, con l'obiettivo di gestire scheletri eterogenei e movimenti complessi in modo più robusto ee automatizzato
 
 \subsection{Introduzione ai metodi automatici: UniRig e ASMR come approcci moderni}
-Negli ultimi anni, il campo del motion retargeting ha visto la diffusione di metodi automatici capaci di trasferire animazioni tra personaggi con proporzioni corporee o strutture scheletriche differenti, riducendo al minimo l'interveto manuale. Questi approcci sfruttano modeli statistici o reti neurali per apprendere la relazione tra pose, scheletri e deformazioni della mesh, con l'obiettivo di preservare la naturalezza del movimento durante il trasferimento.
+Negli ultimi anni, il campo del motion retargeting ha visto la diffusione di metodi automatici capaci di trasferire animazioni tra personaggi con proporzioni corporee o strutture scheletriche differenti, riducendo al minimo l'intervento manuale. Questi approcci sfruttano modelli statistici o reti neurali per apprendere la relazione tra pose, scheletri e deformazioni della mesh, con l'obiettivo di preservare la naturalezza del movimento durante il trasferimento.
 Tra i metodi recenti, si possono distinguere due linee principali:
 
 \paragraph{Metodi basati su adattamento geometrico (es. UniRig)}
 
-approccio come \textbf{UniRig} mirano a costruire automaticamente uno scheletro coerente con la forma della mesh. L'idea è quella di estrarre informazioni geometriche dal modello (es. esempio simmetria, volumi e articolazioni visive) per posizionare le articolazioni in modo plausibile. Successivamente, vengono calcolati i pesi di skining e l'animazione può essere trasferita da altri oggetti.
+approccio come \textbf{UniRig} mirano a costruire automaticamente uno scheletro coerente con la forma della mesh. L'idea è quella di estrarre informazioni geometriche dal modello (es. esempio simmetria, volumi e articolazioni visive) per posizionare le articolazioni in modo plausibile. Successivamente, vengono calcolati i pesi di skinning e l'animazione può essere trasferita da altri oggetti.
 Questi metodi sono particolarmente utili quando si lavora con mesh prive di rig o quando si devono riggare personaggi eterogenei in modo uniforme.
 
 \paragraph{Metodi basati su apprendimento (es. ASMR)}
