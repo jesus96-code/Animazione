@@ -1,0 +1,53 @@
+SLIDE 1
+Buongiorno, mi chiamo ………, oggi presento il mio lavoro di tesi intitolato “Metodi di Rigging Automatico, Skinning e Retargeting di Animazioni per Oggetti 3D Inanimati in Blender”.
+Il lavoro nasce dall’esigenza di automatizzare l’animazione di oggetti 3D che non possiedono una struttura scheletrica naturale, integrando in un’unica pipeline le tre fasi fondamentali dell’animazione: rigging, skinning e retargeting, queste fase consentono di trasformare un oggetto 3D in un elemento capace di muoversi in modo credibile e ottenere animazioni fluide e naturali, pur diverse tra loro, cooperano per rendere il comportamento del modello coerente e realistico.
+
+SLIDE 2
+Gli oggetti inanimati non hanno articolazioni naturali come un corpo umano.
+Questo significa che non esiste una corrispondenza immediata tra animazione e struttura interna.
+Automatizzare il rigging è complesso perché bisogna generare uno scheletro coerente con la geometria dell’oggetto.
+Lo skinning richiede un’assegnazione corretta dei pesi per evitare deformazioni non realistiche.
+Infine, il retargeting introduce un’ulteriore difficoltà: trasferire un’animazione umanoide su una geometria non organica mantenendo coerenza e stabilità del movimento.
+
+SLIDE 3
+La pipeline proposta parte dalla mesh, genera uno scheletro automatico, calcola i pesi di skinning e applica il retargeting dell’animazione.
+Il modello matematico alla base della deformazione è il Linear Blend Skinning
+In questa formulazione, ogni vertice viene trasformato come combinazione pesata delle trasformazioni delle ossa che lo influenzano.
+I pesi determinano quanto ciascun osso contribuisce alla posizione finale del vertice.
+Questo modello è semplice ma estremamente diffuso nei software di animazione.
+
+SLIDE 4
+In questa slide vengono confrontati quattro approcci automatici: UniRig, RigAnything, ASMR e NOR.
+Le differenze principali riguardano il modo in cui viene generata la struttura scheletrica e il livello di controllo sul retargeting.
+UniRig genera un’armatura esplicita, quindi una struttura scheletrica ben definita e semanticamente coerente. Questo permette una corrispondenza più diretta tra ossa sorgente e ossa target.
+RigAnything adotta invece un approccio più geometrico, basato su punti di controllo distribuiti sulla mesh, senza richiedere una corrispondenza scheletrica rigida.
+ASMR e NOR rappresentano approcci più data-driven o neurali, in cui la struttura viene inferita tramite apprendimento.
+Il confronto non riguarda solo la qualità visiva, ma soprattutto la controllabilità del movimento e la riproducibilità del retargeting.
+
+
+SLIDE 5
+Il setup sperimentale è stato progettato per isolare il comportamento della pipeline.
+L’oggetto scelto, un piatto con gambe, presenta una geometria semplice ma non antropomorfa, quindi rappresenta un buon caso di studio per valutare l’adattamento del movimento.
+Le animazioni sono state importate da Mixamo, garantendo una struttura umanoide standard.
+Tutte le fasi sono state implementate e testate in Blender 4.4.3 tramite scripting Python, permettendo un controllo diretto su rigging, pesi e vincoli.
+
+SLIDE 6
+Nel rigging automatico lo scheletro umanoide viene duplicato e ridotto mantenendo solo le ossa rilevanti.
+Il posizionamento delle ossa viene adattato alla geometria tramite il calcolo del bounding box dell’oggetto.
+Questo garantisce che il bacino sia centrato rispetto alla mesh e che le ossa inferiori siano proporzionate all’altezza dell’oggetto.
+Viene poi ricostruita la gerarchia Hips → UpLeg → Leg → Foot, assicurando la corretta propagazione delle trasformazioni lungo la catena articolare.
+Questo passaggio è fondamentale perché definisce la struttura su cui si baseranno skinning e retargeting.
+Nel codice che vediamo è l’allineamento geometrico con la mesh, lo script calcola il bounding box della geometria e ne individua il centro, in modo da posizionare correttamente le articolazioni principali (anca e gambe)
+La prima equazione calcola il centro del bounding box dell’oggetto, questo permette di adattare lo scheletro alla geometria reale della mesh. Successivamente, l’osso del bacino viene posizionato in quel centro e la sua lunghezza viene definita in proporzione all’altezza dell’oggetto (h)
+Equazione del rigging 
+Il rig viene adattato alla geometria calcolando il centro del bounding box dell’oggetto e utilizzandolo come posizione iniziale del bacino. L’altezza dell’osso viene definita in proporzione all’altezza dell’oggetto, garantendo scalabilità rispetto alla dimensione della mesh.
+
+SLIDE 7
+Nella fase di skinning, i pesi vengono trasferiti automaticamente dalla mesh sorgente alla mesh target.
+Lo script seleziona un sottoinsieme di ossa e copia solo i pesi maggiori di zero, preservando la normalizzazione.
+Dal punto di vista matematico, questi pesi vengono poi utilizzati nella formulazione del Linear Blend Skinning per calcolare la deformazione finale dei vertici.
+La qualità dello skinning è cruciale: pesi mal distribuiti genererebbero deformazioni innaturali o instabilità durante il movimento.
+Equazione dello skinning
+Durante lo skinning ho selezionato un sottoinsieme di ossa rilevanti e copiato i pesi corrispondenti dalla mesh sorgente alla mesh target. I pesi rimangono normalizzati e vengono poi utilizzati nella formula di Linear Blend Skinning per calcolare la deformazione finale.
+
+SLIDE 8
