@@ -51,3 +51,25 @@ Equazione dello skinning
 Durante lo skinning ho selezionato un sottoinsieme di ossa rilevanti e copiato i pesi corrispondenti dalla mesh sorgente alla mesh target. I pesi rimangono normalizzati e vengono poi utilizzati nella formula di Linear Blend Skinning per calcolare la deformazione finale.
 
 SLIDE 8
+Per ultimo parliamo di retargeting che ha come obbiettivo mappare le ossa del rig sorgente (umanoide) su quello del rig target (PiattoRig), trasferendo posizioni e rotazioni delle articolazioni principali implementato utilizzando vincoli di trasformazioni(copia in tempo reale i movimenti del rig originale).
+Il risultato è un trasferimento fedele del movimento applicato anche a oggetti con una morfologia completamente diverse da quello del modello originale.
+
+SLIDE 9 
+Per confrontare gli approcci non mi sono limitato ad un'analisi visiva, ma ho proiettato le traiettorie dei joint su un piano 2D.
+UniRig consente un retargeting più diretto e semanticamente coerente con le animazioni sorgente, questa caratteristica facilita il trasferimento i animazioni provenienti da dataset antropomorfi, come Mixamo.
+RigAnything, mostra una maggiore flessibilità nel trasferimento del movimento, questo approccio produce movimenti visivamente più fluidi, ma rende più complesso il controllo finale del retargeting e la sua riproducibilità su animazioni differenti.
+Questo evidenza una differenza strutturale: UniRig privilegia la coerenza semantica, mentre RigAnything privilegia l'adattamento geometrico.
+
+SLIDE 10
+In conclusione, il lavoro ha dimostrato che è possibile costruire una pipeline completa per l’animazione automatica di oggetti inanimati, integrando rigging, skinning e retargeting in modo coerente.
+Tra gli approcci analizzati, UniRig si è dimostrato particolarmente efficace nei casi in cui è richiesta una struttura scheletrica esplicita e un controllo semantico del movimento.
+Il confronto con RigAnything ha evidenziato una differenza strutturale importante: mentre UniRig privilegia stabilità e controllabilità, RigAnything mostra maggiore adattamento alla geometria ma minore coerenza articolare nei joint distali.
+
+Sviluppi futuri
+
+Come sviluppi futuri, l’introduzione di metriche quantitative automatiche permetterebbe di misurare oggettivamente la qualità del retargeting, superando la sola analisi visiva.
+
+Inoltre, sarebbe interessante estendere la sperimentazione a oggetti con geometrie più complesse o non simmetriche, per valutare la robustezza della pipeline.
+
+Un ulteriore sviluppo potrebbe riguardare l’integrazione di approcci neurali per automatizzare ulteriormente la generazione della struttura scheletrica.
+
