@@ -36,11 +36,8 @@ Nel rigging automatico lo scheletro umanoide viene duplicato e ridotto mantenend
 Il posizionamento delle ossa viene adattato alla geometria tramite il calcolo del bounding box dell’oggetto.
 Questo garantisce che il bacino sia centrato rispetto alla mesh e che le ossa inferiori siano proporzionate all’altezza dell’oggetto.
 Viene poi ricostruita la gerarchia Hips → UpLeg → Leg → Foot, assicurando la corretta propagazione delle trasformazioni lungo la catena articolare.
+L’altezza dell’osso viene definita in proporzione all’altezza dell’oggetto, garantendo scalabilità rispetto alla dimensione della mesh.
 Questo passaggio è fondamentale perché definisce la struttura su cui si baseranno skinning e retargeting.
-Nel codice che vediamo è l’allineamento geometrico con la mesh, lo script calcola il bounding box della geometria e ne individua il centro, in modo da posizionare correttamente le articolazioni principali (anca e gambe)
-La prima equazione calcola il centro del bounding box dell’oggetto, questo permette di adattare lo scheletro alla geometria reale della mesh. Successivamente, l’osso del bacino viene posizionato in quel centro e la sua lunghezza viene definita in proporzione all’altezza dell’oggetto (h)
-Equazione del rigging 
-Il rig viene adattato alla geometria calcolando il centro del bounding box dell’oggetto e utilizzandolo come posizione iniziale del bacino. L’altezza dell’osso viene definita in proporzione all’altezza dell’oggetto, garantendo scalabilità rispetto alla dimensione della mesh.
 
 SLIDE 7
 Nella fase di skinning, i pesi vengono trasferiti automaticamente dalla mesh sorgente alla mesh target.
